@@ -1,19 +1,20 @@
+import createEmotionCache from "@/config/createEmotionCache";
+import theme from "@/config/theme";
+import { wrapper } from "@/store";
 import "@/styles/globals.css";
 import { CacheProvider } from "@emotion/react";
+import { ThemeProvider } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import type { NextComponentType } from "next";
 import type {
-  AppProps,
   AppContext,
   AppInitialProps,
   AppLayoutProps,
+  AppProps,
 } from "next/app";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
-import createEmotionCache from "@/config/createEmotionCache";
-import { Provider } from "react-redux";
-import { wrapper } from "@/store";
-import theme from "@/config/theme";
-import type { NextComponentType } from "next";
 import type { ReactNode } from "react";
+import { Provider } from "react-redux";
 
 const clientSideEmotionCache = createEmotionCache();
 

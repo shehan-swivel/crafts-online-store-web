@@ -1,14 +1,11 @@
-import styles from "@/styles/Footer.module.css";
 import { Paper, Typography } from "@mui/material";
 
 const Footer = () => {
   return (
     <Paper
-      className={styles.container}
       component="footer"
-      variant="outlined"
-      elevation={0}
       square
+      sx={{ height: 48, display: "flex", alignItems: "center", justifyContent: "center" }}
     >
       <Typography textAlign="center" variant="caption" component="h6">
         {new Date().getFullYear()} - <strong>Crafts Online Store</strong>
