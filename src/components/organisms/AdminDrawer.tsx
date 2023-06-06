@@ -79,7 +79,7 @@ const AdminDrawer = ({ open, drawerWidth, onToggleDrawer }: AdminDrawerProps) =>
   const router = useRouter();
 
   return (
-    <Drawer variant="permanent" open={open} drawerWidth={drawerWidth}>
+    <Drawer variant="permanent" className="shadow" open={open} drawerWidth={drawerWidth}>
       <Toolbar
         sx={{
           display: "flex",

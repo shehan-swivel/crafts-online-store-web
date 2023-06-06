@@ -1,20 +1,20 @@
+import ConfirmationDialog from "@/components/organisms/ConfirmationDialog";
 import createEmotionCache from "@/config/createEmotionCache";
 import theme from "@/config/theme";
+import { ConfirmProvider } from "@/contexts/ConfirmContext";
 import { wrapper } from "@/store";
 import "@/styles/globals.css";
 import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import type { NextComponentType } from "next";
-import type {
-  AppContext,
-  AppInitialProps,
-  AppLayoutProps,
-  AppProps,
-} from "next/app";
+import type { AppContext, AppInitialProps, AppLayoutProps, AppProps } from "next/app";
+import { Inter } from "next/font/google";
 import Head from "next/head";
 import type { ReactNode } from "react";
 import { Provider } from "react-redux";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -37,12 +37,18 @@ export default function App({
         <title>Crafts Online Store</title>
       </Head>
 
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
-      </ThemeProvider>
+      <main className={inter.className}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Provider store={store}>
+            <ConfirmProvider>
+              <Component {...pageProps} />
+
+              <ConfirmationDialog />
+            </ConfirmProvider>
+          </Provider>
+        </ThemeProvider>
+      </main>
     </CacheProvider>
   );
 }

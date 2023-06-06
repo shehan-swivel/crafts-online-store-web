@@ -38,7 +38,14 @@ const AppBar = styled(MuiAppBar, {
 
 const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) => {
   return (
-    <AppBar position="absolute" open={open} drawerWidth={drawerWidth}>
+    <AppBar
+      position="absolute"
+      color="inherit"
+      className="shadow"
+      enableColorOnDark
+      open={open}
+      drawerWidth={drawerWidth}
+    >
       <Toolbar>
         <IconButton
           edge="start"
@@ -53,7 +60,7 @@ const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) =>
           <MenuTwoToneIcon />
         </IconButton>
         <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-          Dashboard
+          Online Crafts Store
         </Typography>
         <IconButton color="inherit">
           <Badge badgeContent={4} color="secondary">
