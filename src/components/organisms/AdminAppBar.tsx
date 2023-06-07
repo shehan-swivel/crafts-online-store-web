@@ -1,7 +1,7 @@
+import useConfirm from "@/hooks/useConfirm";
+import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
-import NotificationsTwoToneIcon from "@mui/icons-material/NotificationsTwoTone";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -37,6 +37,16 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) => {
+  const { confirm } = useConfirm();
+
+  const logout = async () => {
+    const isConfirmed = await confirm("Do you want to logout ?");
+
+    if (isConfirmed) {
+      console.log("Logout");
+    }
+  };
+
   return (
     <AppBar
       position="absolute"
@@ -62,10 +72,8 @@ const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) =>
         <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
           Online Crafts Store
         </Typography>
-        <IconButton color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <NotificationsTwoToneIcon />
-          </Badge>
+        <IconButton color="inherit" onClick={logout}>
+          <LogoutTwoToneIcon />
         </IconButton>
       </Toolbar>
     </AppBar>

@@ -6,7 +6,7 @@ const ConfirmationDialog = () => {
   const { onConfirm, onCancel, show, message } = useConfirm();
 
   return (
-    <Dialog open={show} onClose={onCancel} maxWidth="xs" PaperProps={{ sx: { p: 2 } }}>
+    <Dialog open={show} onClose={onCancel} maxWidth="xs" PaperProps={{ sx: { p: 2 } }} fullWidth>
       <Box display="flex" justifyContent="center" sx={{ fontSize: 48 }}>
         <ErrorTwoToneIcon color="error" fontSize="inherit" />
       </Box>
