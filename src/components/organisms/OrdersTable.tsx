@@ -1,7 +1,7 @@
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
 import { Address, Order, OrderItem, TableHeaderCell } from "@/types";
-import { formatDate } from "@/types/date-time-utils";
+import { formatDate } from "@/utils/date-time-utils";
 import { formatPrice } from "@/utils/common-utiils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownTwoTone";

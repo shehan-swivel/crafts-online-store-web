@@ -10,7 +10,7 @@ const DescriptionItem = ({ label, value }: DescriptionItemProps) => {
   return (
     <Grid container>
       <Grid item xs={12} lg={2}>
-        <Typography gutterBottom pr={2} color="GrayText" variant="body2">
+        <Typography gutterBottom pr={2} color="text.secondary" variant="body2">
           {label}
         </Typography>
       </Grid>
