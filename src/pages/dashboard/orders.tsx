@@ -1,8 +1,16 @@
+import AdminHeader from "@/components/molecules/AdminHeader";
+import OrdersTable from "@/components/organisms/OrdersTable";
 import AdminLayout from "@/components/templates/AdminLayout";
 import { ReactNode } from "react";
 
 const Orders = () => {
-  return <div>orders</div>;
+  return (
+    <div>
+      <AdminHeader title="Orders" sx={{ mb: 4 }} />
+
+      <OrdersTable />
+    </div>
+  );
 };
 
 Orders.getLayout = function getLayout(page: ReactNode) {
