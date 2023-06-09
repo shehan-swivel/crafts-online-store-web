@@ -41,7 +41,7 @@ const ContentWrapper = styled("div")({
 
 const CategoryCard = ({ name, description }: CategoryCardProps) => {
   return (
-    <CategoryCardWrapper className="rounded" href="/dashboard">
+    <CategoryCardWrapper className="rounded" href={{ pathname: "/shop", query: { category: name } }}>
       <Image className="rounded" alt="category" src="/image.jpg" fill style={{ objectFit: "cover" }} />
       <ContentWrapper>
         <Typography variant="h5" fontWeight="bold" color="primary.contrastText" textTransform="capitalize">

@@ -1,21 +1,12 @@
-import useConfirm from "@/hooks/useConfirm";
-import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
-import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import AppBar from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
-import Button from "@mui/material/Button";
-import Toolbar from "@mui/material/Toolbar";
-import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import Logo from "../atoms/Logo";
+import Link from "@mui/material/Link";
+import Toolbar from "@mui/material/Toolbar";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import ShoppingCartTwoToneIcon from "@mui/icons-material/ShoppingCartTwoTone";
-import Search from "../molecules/Search";
-import RoundedButton from "../atoms/RoundedButton";
+import Logo from "../atoms/Logo";
 import CartButton from "../molecules/CartButton";
+import Search from "../molecules/Search";
 
 type MainAppBarProps = {};
 
@@ -59,7 +50,6 @@ const MainAppBar = ({}: MainAppBarProps) => {
           ))}
         </Box>
 
-        <Search placeholder="Search" size="small" onSearch={search} sx={{ mr: 3 }} />
         <CartButton />
       </Toolbar>
     </AppBar>
