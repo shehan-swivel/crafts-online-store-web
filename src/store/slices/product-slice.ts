@@ -8,7 +8,7 @@ const dummyData: Product[] = [
   {
     _id: "1",
     name: "Craft 1",
-    description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots",
+    description: "Contrary to popular belief",
     qty: 23,
     price: 1750.0,
     category: "TEXTILES",
@@ -18,10 +18,19 @@ const dummyData: Product[] = [
     _id: "2",
     name: "Craft 2",
     description:
-      "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be",
+      "Injected humour, or randomised words which don't look even slightly believable you need to be",
     qty: 23,
     price: 890.0,
     category: "WOOD",
+    image: "https://picsum.photos/id/1/200/300",
+  },
+  {
+    _id: "3",
+    name: "Craft 3",
+    description: "There are many variations of passages of Lorem Ipsum available",
+    qty: 23,
+    price: 250.0,
+    category: "CLAY",
     image: "https://picsum.photos/id/1/200/300",
   },
 ];
