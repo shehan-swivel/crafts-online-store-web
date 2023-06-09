@@ -1,8 +1,9 @@
-import React from "react";
+import useAppSelector from "@/hooks/useAppSelector";
+import ShoppingCartTwoToneIcon from "@mui/icons-material/ShoppingCartTwoTone";
+import Badge, { BadgeProps } from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import { styled } from "@mui/material/styles";
-import Badge, { BadgeProps } from "@mui/material/Badge";
-import ShoppingCartTwoToneIcon from "@mui/icons-material/ShoppingCartTwoTone";
+import Link from "next/link";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -14,9 +15,11 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }));
 
 const CartButton = () => {
+  const cartItemsCount = useAppSelector((state) => state.cart.items.length);
+
   return (
-    <IconButton aria-label="cart" color="inherit">
-      <StyledBadge badgeContent={4} color="secondary">
+    <IconButton aria-label="cart" color="inherit" href="/cart" LinkComponent={Link}>
+      <StyledBadge badgeContent={cartItemsCount} color="secondary">
         <ShoppingCartTwoToneIcon />
       </StyledBadge>
     </IconButton>

@@ -11,4 +11,8 @@ export enum OrderStatus {
   CANCELLED = "CANCELLED",
 }
 
+export const StorageKeys = {
+  CART: "cart",
+};
+
 export const DEFAULT_IMAGE = "https://via.placeholder.com/300x200?text=Image";
