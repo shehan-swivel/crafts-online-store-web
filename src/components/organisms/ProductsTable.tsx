@@ -1,5 +1,8 @@
+import { DEFAULT_IMAGE } from "@/constants";
+import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
+import { deleteProduct } from "@/store/slices/product-slice";
 import { Product, TableHeaderCell } from "@/types";
 import { formatPrice } from "@/utils/common-utiils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
@@ -90,6 +93,7 @@ const ProductsTable = ({ onEdit }: ProductsTableProps) => {
 
 const Row = ({ row, onEdit }: RowProps) => {
   const { confirm } = useConfirm();
+  const dispatch = useAppDispatch();
 
   const [showDescription, setShowDescription] = useState(false);
 
@@ -98,7 +102,7 @@ const Row = ({ row, onEdit }: RowProps) => {
     const isConfirmed = await confirm("Are you sure you want to delete this record ?");
 
     if (isConfirmed) {
-      console.log("Delete product");
+      dispatch(deleteProduct(product._id as string));
     }
   };
 
@@ -108,7 +112,7 @@ const Row = ({ row, onEdit }: RowProps) => {
         <TableCell>
           <Box display="flex" alignItems="center">
             <Image
-              src={row.image as string}
+              src={(row.image as string) || DEFAULT_IMAGE}
               alt="product image"
               loading="lazy"
               height={80}

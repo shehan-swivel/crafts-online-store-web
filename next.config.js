@@ -15,6 +15,12 @@ const nextConfig = {
         port: "",
         pathname: "/id/**",
       },
+      {
+        protocol: "https",
+        hostname: "crafts-online-store.s3.ap-southeast-1.amazonaws.com",
+        port: "",
+        pathname: "/*",
+      },
     ],
   },
 };

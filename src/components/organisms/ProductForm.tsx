@@ -1,4 +1,7 @@
 import { ProductCategory } from "@/constants";
+import useAppDispatch from "@/hooks/useAppDispatch";
+import useAppSelector from "@/hooks/useAppSelector";
+import { addProduct, updateProduct } from "@/store/slices/product-slice";
 import { Product } from "@/types";
 import { convertFileToBase64 } from "@/utils/common-utiils";
 import { productFormSchema } from "@/utils/validations";
@@ -13,17 +16,18 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { ChangeEvent, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import SpinnerIcon from "../atoms/SpinnerIcon";
 import FileUpload from "../molecules/FileUpload";
 
 type ProductFormProps = {
+  isEdit: boolean;
   defaultValues: Product;
-  onSubmit: SubmitHandler<Product>;
   onClose: () => void;
 };
 
-const ProductForm = ({ defaultValues, onSubmit, onClose }: ProductFormProps) => {
+const ProductForm = ({ isEdit, defaultValues, onClose }: ProductFormProps) => {
   const {
     control,
     handleSubmit,
@@ -32,6 +36,9 @@ const ProductForm = ({ defaultValues, onSubmit, onClose }: ProductFormProps) => 
     defaultValues,
     resolver: yupResolver(productFormSchema),
   });
+
+  const dispatch = useAppDispatch();
+  const submitState = useAppSelector((state) => state.products.submit);
 
   const [image, setImage] = useState<File | undefined>(undefined);
   const [imageUrl, setImageUrl] = useState("");
@@ -46,15 +53,36 @@ const ProductForm = ({ defaultValues, onSubmit, onClose }: ProductFormProps) => 
     }
   };
 
-  const onSubmitForm = (values: Product) => {
-    if (image) {
-      values.image = image;
+  const submitForm = async (values: Product) => {
+    const { name, description, price, qty, category } = values;
+
+    const fd = new FormData();
+    fd.append("name", name);
+    fd.append("description", description as string);
+    fd.append("price", price.toString());
+    fd.append("qty", qty.toString());
+    fd.append("category", category);
+    fd.append("image", image ? (image as Blob) : (values.image as string));
+
+    if (isEdit) {
+      await dispatch(updateProduct({ id: values._id as string, data: fd }));
+    } else {
+      await dispatch(addProduct(fd));
     }
-    onSubmit(values);
+
+    if (submitState.success) {
+      onClose();
+    }
   };
 
+  useEffect(() => {
+    if (defaultValues.image) {
+      setImageUrl(defaultValues.image as string);
+    }
+  }, [defaultValues]);
+
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmitForm)} sx={{ mt: 3 }}>
+    <Box component="form" onSubmit={handleSubmit(submitForm)} sx={{ mt: 3 }}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Controller
@@ -146,6 +174,7 @@ const ProductForm = ({ defaultValues, onSubmit, onClose }: ProductFormProps) => 
             onChange={handleFileSelect}
             icon={<AddTwoToneIcon />}
             label="Select Product image"
+            accept="image/png, image/jpeg"
             imageUrl={imageUrl}
           />
         </Grid>
@@ -155,8 +184,8 @@ const ProductForm = ({ defaultValues, onSubmit, onClose }: ProductFormProps) => 
         <Button variant="text" color="inherit" sx={{ mr: 2 }} onClick={onClose}>
           Cancel
         </Button>
-        <Button type="submit" variant="text">
-          Save
+        <Button type="submit" variant="text" disabled={submitState.loading}>
+          {submitState.loading ? <SpinnerIcon /> : "Save"}
         </Button>
       </Box>
     </Box>
