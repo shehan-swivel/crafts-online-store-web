@@ -6,12 +6,12 @@ import { wrapper } from "@/store";
 import { CacheProvider } from "@emotion/react";
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import type { ReactNode } from "react";
 import { Provider } from "react-redux";
-
 import "@/styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -34,18 +34,20 @@ export default function App({ Component, ...otherProps }: AppProps) {
         <title>Crafts Online Store</title>
       </Head>
 
-      <main className={inter.className}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Provider store={store}>
-            <ConfirmProvider>
-              {getLayout(<Component {...pageProps} />)}
+      <SessionProvider session={pageProps.session}>
+        <main className={inter.className}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Provider store={store}>
+              <ConfirmProvider>
+                {getLayout(<Component {...pageProps} />)}
 
-              <ConfirmationDialog />
-            </ConfirmProvider>
-          </Provider>
-        </ThemeProvider>
-      </main>
+                <ConfirmationDialog />
+              </ConfirmProvider>
+            </Provider>
+          </ThemeProvider>
+        </main>
+      </SessionProvider>
     </CacheProvider>
   );
 }

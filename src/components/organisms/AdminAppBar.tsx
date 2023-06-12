@@ -1,4 +1,5 @@
 import useConfirm from "@/hooks/useConfirm";
+import { authService } from "@/services";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
@@ -6,6 +7,8 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 type AdminAppBarProps = {
   open: boolean;
@@ -38,12 +41,17 @@ const AppBar = styled(MuiAppBar, {
 
 const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) => {
   const { confirm } = useConfirm();
+  const router = useRouter();
+  const { data } = useSession();
+  console.log({ data });
 
   const logout = async () => {
     const isConfirmed = await confirm("Do you want to logout ?");
 
     if (isConfirmed) {
-      console.log("Logout");
+      signOut();
+      // authService.logout();
+      // router.push("/login");
     }
   };
 

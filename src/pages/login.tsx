@@ -1,5 +1,6 @@
-import Logo from "@/components/atoms/Logo";
+import SpinnerIcon from "@/components/atoms/SpinnerIcon";
 import AuthLayout from "@/components/templates/AuthLayout";
+import { authService } from "@/services";
 import { Login } from "@/types";
 import { loginFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,8 +9,9 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
-import React, { ReactNode } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import { ReactNode, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 const defaultValues = {
@@ -27,13 +29,36 @@ const Login = () => {
     resolver: yupResolver(loginFormSchema),
   });
 
-  const submitForm = (values: Login) => {
-    console.log(values);
+  const router = useRouter();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submitForm = async (values: Login) => {
+    try {
+      setIsSubmitting(true);
+      // const response = await authService.login(values);
+      await signIn("credentials", {
+        username: values.username,
+        password: values.password,
+        redirect: true,
+        callbackUrl: "/dashboard",
+      });
+
+      // Redirect to the Password Change page if password change is required, otherwise redirect to the dashboard
+      // if (response.data.data.requirePasswordChange) {
+      //   router.push("/change-password");
+      // } else {
+      //   router.push("/dashboard");
+      // }
+    } catch (error) {
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-      <Typography variant="h5" gutterBottom mb={4} fontWeight="bold">
+      <Typography variant="h5" gutterBottom mb={3} fontWeight="bold">
         Login
       </Typography>
 
@@ -76,8 +101,15 @@ const Login = () => {
           </Grid>
         </Grid>
 
-        <Button fullWidth type="submit" variant="contained" disableElevation sx={{ mt: 3 }}>
-          Login
+        <Button
+          fullWidth
+          type="submit"
+          variant="contained"
+          disableElevation
+          sx={{ mt: 3 }}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? <SpinnerIcon /> : "Login"}
         </Button>
       </Box>
     </>

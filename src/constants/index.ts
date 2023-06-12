@@ -11,8 +11,13 @@ export enum OrderStatus {
   CANCELLED = "CANCELLED",
 }
 
+export enum Role {
+  ADMIN = "ADMIN",
+}
+
 export const StorageKeys = {
   CART: "cart",
+  ACCESS_TOKEN: "access_token",
 };
 
 export const DEFAULT_IMAGE = "https://via.placeholder.com/300x200?text=Image";
