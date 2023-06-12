@@ -9,10 +9,10 @@ const Cart = () => {
   return (
     <Container sx={{ py: 4 }}>
       <Grid container spacing={4}>
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} md={8}>
           <CartTable />
         </Grid>
-        <Grid item xs={12} lg={4}>
+        <Grid item xs={12} md={4}>
           <CartSummary />
         </Grid>
       </Grid>

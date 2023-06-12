@@ -14,15 +14,16 @@ export type OrderItem = {
 };
 
 export type Order = {
-  _id: string;
-  amount: number;
-  status: OrderStatus;
+  _id?: string;
+  amount?: number;
+  status?: OrderStatus;
   items: OrderItem[];
   note?: string;
   customerName: string;
   phoneNumber: string;
   email?: string;
   billingAddress: Address;
-  shippingAddress: Address;
-  createdAt: string;
+  shipToDifferentAddress?: boolean;
+  shippingAddress?: Address;
+  createdAt?: string;
 };

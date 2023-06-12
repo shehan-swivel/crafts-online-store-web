@@ -28,7 +28,7 @@ const ChangePasswordForm = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(submitForm)} sx={{ mt: 3 }}>
+    <Box component="form" onSubmit={handleSubmit(submitForm)}>
       <Grid container>
         <Grid item xs={12}>
           <Controller

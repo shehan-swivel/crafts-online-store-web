@@ -31,7 +31,9 @@ const MainAppBar = ({}: MainAppBarProps) => {
   return (
     <AppBar position="static" color="inherit">
       <Toolbar>
-        <Logo width={200} height={64} />
+        <NextLink href="/">
+          <Logo width={200} height={64} />
+        </NextLink>
 
         <Box flexGrow={1}>
           {menuItems.map((menu) => (
