@@ -1,8 +1,10 @@
 import { StorageKeys } from "@/constants";
-import { Cart, CartItem } from "@/types/cart-types";
+import { Product } from "@/types";
+import { Cart } from "@/types/cart-types";
+import { getCookie, removeCookie, setCookie } from "@/utils/cookie-utils";
 
 /* 
-  The cart service in this application utilizes session storage as the data storage method 
+  The cart service in this application utilizes Cookies as the data storage method 
   since customer accounts are not maintained in the database. In the future, if customer accounts 
   are added to the application, these functions can be easily replaced with appropriate APIs. 
 */
@@ -11,23 +13,34 @@ export const cartService = {
   addToCart,
   removeFromCart,
   updateCart,
+  clearCart,
 };
 
 /**
  * Get cart details
  */
 function getCart(): Cart {
-  const cart = JSON.parse(sessionStorage.getItem(StorageKeys.CART) as string);
-  return cart;
+  const cart = getCookie(StorageKeys.CART);
+  return cart ? JSON.parse(cart) : { items: [] };
 }
 
 /**
  * Add new item to the cart
  */
-function addToCart(newItem: CartItem): Cart {
-  const cart = getCart();
-  cart.items.push(newItem);
-  sessionStorage.setItem(StorageKeys.CART, JSON.stringify(cart));
+function addToCart(newItem: Product): Cart {
+  let cart = getCart();
+
+  // Find if item already exists in the cart
+  const cartItem = cart.items.find((item) => item._id === newItem._id);
+
+  if (cartItem && cartItem._id) {
+    cart = updateCart(cartItem._id, cartItem.qty + 1);
+  } else {
+    newItem = { ...newItem, qty: 1 };
+    cart.items.push(newItem);
+    setCookie(StorageKeys.CART, JSON.stringify(cart), { expires: 7 });
+  }
+
   return cart;
 }
 
@@ -37,7 +50,7 @@ function addToCart(newItem: CartItem): Cart {
 function removeFromCart(id: string): Cart {
   const cart = getCart();
   cart.items = cart.items.filter((item) => item._id !== id);
-  sessionStorage.setItem(StorageKeys.CART, JSON.stringify(cart));
+  setCookie(StorageKeys.CART, JSON.stringify(cart), { expires: 7 });
   return cart;
 }
 
@@ -51,8 +64,16 @@ function updateCart(id: string, qty: number): Cart {
   if (index >= 0) {
     const updatedItem = { ...cart.items[index], qty };
     cart.items[index] = updatedItem;
-    sessionStorage.setItem(StorageKeys.CART, JSON.stringify(cart));
+    setCookie(StorageKeys.CART, JSON.stringify(cart), { expires: 7 });
   }
 
   return cart;
+}
+
+/**
+ * Clear cart
+ */
+function clearCart(): null {
+  removeCookie(StorageKeys.CART);
+  return null;
 }

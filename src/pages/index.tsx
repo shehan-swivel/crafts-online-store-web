@@ -7,8 +7,15 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
+import { wrapper } from "@/store";
+import { getProducts } from "@/store/slices/product-slice";
+import { addToCart } from "@/store/slices/cart-slice";
+import { Product } from "@/types";
+import useAppDispatch from "@/hooks/useAppDispatch";
 
 export default function Home() {
+  const dispatch = useAppDispatch();
+
   const products = useAppSelector((state) => state.products.all.data);
 
   const categories = [
@@ -26,6 +33,10 @@ export default function Home() {
     },
   ];
 
+  const handleAdd = (item: Product) => {
+    dispatch(addToCart(item));
+  };
+
   return (
     <>
       {/* Banner section */}
@@ -39,7 +50,13 @@ export default function Home() {
         <Grid container spacing={4} rowGap={1}>
           {products.map((product) => (
             <Grid item key={product._id} xs={12} sm={6} md={4}>
-              <ProductCard name={product.name} description={product.description} price={product.price} />
+              <ProductCard
+                name={product.name}
+                description={product.description}
+                price={product.price}
+                image={product.image as string}
+                onAdd={() => handleAdd(product)}
+              />
             </Grid>
           ))}
         </Grid>
@@ -63,3 +80,11 @@ export default function Home() {
 Home.getLayout = function getLayout(page: ReactNode) {
   return <MainLayout>{page}</MainLayout>;
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
+  await store.dispatch(getProducts({ limit: 6 }));
+
+  return {
+    props: {},
+  };
+});

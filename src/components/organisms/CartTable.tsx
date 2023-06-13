@@ -1,6 +1,8 @@
+import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
-import { TableHeaderCell } from "@/types";
-import { CartItem } from "@/types/cart-types";
+import useConfirm from "@/hooks/useConfirm";
+import { removeFromCart, updateCart } from "@/store/slices/cart-slice";
+import { Product, TableHeaderCell } from "@/types";
 import { formatPrice } from "@/utils/common-utiils";
 import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
 import IconButton from "@mui/material/IconButton";
@@ -14,8 +16,12 @@ import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 
+type CartTableProps = {
+  data: Product[];
+};
+
 type RowProps = {
-  row: CartItem;
+  row: Product;
 };
 
 const headerCells: TableHeaderCell[] = [
@@ -45,9 +51,7 @@ const headerCells: TableHeaderCell[] = [
   },
 ];
 
-const CartTable = () => {
-  const cartItems = useAppSelector((state) => state.cart.items);
-
+const CartTable = ({ data }: CartTableProps) => {
   return (
     <TableContainer className="shadow" component={Paper}>
       <Table sx={{ minHeight: 200 }} aria-label="cart items table">
@@ -62,7 +66,7 @@ const CartTable = () => {
         </TableHead>
 
         <TableBody>
-          {cartItems.map((item) => (
+          {data?.map((item) => (
             <Row key={item._id} row={item} />
           ))}
         </TableBody>
@@ -72,7 +76,24 @@ const CartTable = () => {
 };
 
 const Row = ({ row }: RowProps) => {
+  const dispatch = useAppDispatch();
+  const { confirm } = useConfirm();
+
   const [quantity, setQuantity] = useState(row.qty);
+
+  const updateQuantity = (value: number) => {
+    setQuantity(value);
+    dispatch(updateCart({ id: row._id as string, qty: value }));
+  };
+
+  // Get user confirmation before remove from cart
+  const confirmDelete = async (): Promise<void> => {
+    const isConfirmed = await confirm("Are you sure you want to remove this from cart ?");
+
+    if (isConfirmed) {
+      dispatch(removeFromCart(row._id as string));
+    }
+  };
 
   return (
     <TableRow key={row._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
@@ -86,12 +107,12 @@ const Row = ({ row }: RowProps) => {
           type="number"
           value={quantity}
           sx={{ width: 72 }}
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
+          onChange={(e) => updateQuantity(+e.target.value)}
         />
       </TableCell>
       <TableCell align="right">{formatPrice(row.price * row.qty)}</TableCell>
       <TableCell align="right">
-        <IconButton color="error" aria-label="Remove">
+        <IconButton color="error" aria-label="Remove" onClick={confirmDelete}>
           <CloseTwoToneIcon />
         </IconButton>
       </TableCell>

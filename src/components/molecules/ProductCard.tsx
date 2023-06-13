@@ -1,24 +1,24 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
+import { DEFAULT_IMAGE } from "@/constants";
 import { formatPrice } from "@/utils/common-utiils";
-import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 import RoundedButton from "../atoms/RoundedButton";
 
 type ProductCardProps = {
   name: string;
   description?: string;
   price: number;
+  image?: string;
+  onAdd: () => void;
 };
 
-const ProductCard = ({ name, description, price }: ProductCardProps) => {
+const ProductCard = ({ name, description, price, image, onAdd }: ProductCardProps) => {
   return (
     <div>
       <Card elevation={0}>
-        <CardMedia sx={{ height: 140 }} image="/image.jpg" />
+        <CardMedia sx={{ height: 140 }} image={image || DEFAULT_IMAGE} />
       </Card>
 
       <Box display="flex" justifyContent="space-between" mt={2}>
@@ -36,7 +36,7 @@ const ProductCard = ({ name, description, price }: ProductCardProps) => {
         </Typography>
       </Box>
 
-      <RoundedButton variant="outlined" color="primary" sx={{ mt: 2 }}>
+      <RoundedButton variant="outlined" color="primary" sx={{ mt: 2 }} onClick={onAdd}>
         Add to Cart
       </RoundedButton>
     </div>

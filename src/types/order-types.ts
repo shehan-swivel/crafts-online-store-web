@@ -9,7 +9,7 @@ export type Address = {
 };
 
 export type OrderItem = {
-  product: Product;
+  product: Product | string;
   qty: number;
 };
 

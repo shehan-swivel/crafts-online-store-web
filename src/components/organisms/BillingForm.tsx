@@ -1,13 +1,17 @@
-import { Address, Order } from "@/types";
+import useAppDispatch from "@/hooks/useAppDispatch";
+import useAppSelector from "@/hooks/useAppSelector";
+import { createOrder } from "@/store/slices/order-slice";
+import { Order, OrderItem } from "@/types";
 import { checkoutFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
+import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/router";
 import { Controller, useForm } from "react-hook-form";
 
 const defaultValues: Order = {
@@ -42,11 +46,28 @@ const CheckoutForm = () => {
     resolver: yupResolver(checkoutFormSchema),
   });
 
-  const shipToDifferentAddress = watch("shipToDifferentAddress");
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const onSubmitForm = (values: Order) => {
-    // TODO: make API request and redirect to the home page
-    console.log(values);
+  const shipToDifferentAddress = watch("shipToDifferentAddress");
+  const cartItems = useAppSelector((state) => state.cart.cart.items);
+
+  const onSubmitForm = async (values: Order) => {
+    try {
+      const items = cartItems.map((item) => {
+        return { product: item._id, qty: item.qty };
+      }) as OrderItem[];
+
+      if (!values.shipToDifferentAddress) {
+        delete values.shippingAddress;
+      }
+
+      const requestPayload = { ...values, items };
+      delete requestPayload.shipToDifferentAddress;
+
+      await dispatch(createOrder(requestPayload));
+      router.push("/");
+    } catch (error) {}
   };
 
   return (

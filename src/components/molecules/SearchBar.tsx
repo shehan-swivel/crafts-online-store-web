@@ -10,18 +10,19 @@ import { useEffect, useState } from "react";
 import RoundedButton from "../atoms/RoundedButton";
 
 type SearchBarProps = {
-  value?: string;
+  search?: string;
+  category?: ProductCategory;
   onSearch: (searchValue: string, category: string) => void;
 };
 
-const SearchBar = ({ value = "", onSearch }: SearchBarProps) => {
+const SearchBar = ({ search, category, onSearch }: SearchBarProps) => {
   const [searchValue, setSearchValue] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryValue, setCategoryValue] = useState<ProductCategory | string>("");
 
   useEffect(() => {
-    setSearchValue(value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (search) setSearchValue(search);
+    if (category) setCategoryValue(category);
+  }, [category, search]);
 
   return (
     <Paper className="shadow" sx={{ display: "flex", p: 2, borderRadius: 50, maxWidth: 470, height: 64 }}>
@@ -38,14 +39,16 @@ const SearchBar = ({ value = "", onSearch }: SearchBarProps) => {
       <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
       <Select
-        value={category}
+        value={categoryValue}
         variant="standard"
         disableUnderline
         displayEmpty
         renderValue={(value) => (value !== "" ? value : "Category")}
-        onChange={(e) => setCategory(e.target.value)}
+        onChange={(e) => setCategoryValue(e.target.value)}
       >
-        <MenuItem value="All">All</MenuItem>
+        <MenuItem value="">
+          <em>All</em>
+        </MenuItem>
         {Object.entries(ProductCategory).map(([key, value]) => (
           <MenuItem key={value} value={value}>
             {key}
@@ -55,7 +58,11 @@ const SearchBar = ({ value = "", onSearch }: SearchBarProps) => {
 
       <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
-      <RoundedButton variant="contained" disableElevation onClick={() => onSearch(searchValue, category)}>
+      <RoundedButton
+        variant="contained"
+        disableElevation
+        onClick={() => onSearch(searchValue, categoryValue)}
+      >
         Search
       </RoundedButton>
     </Paper>

@@ -1,3 +1,5 @@
+import useAppSelector from "@/hooks/useAppSelector";
+import { cartTotalPriceSelector } from "@/store/slices/cart-slice";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -6,15 +8,18 @@ import RoundedButton from "../atoms/RoundedButton";
 import SummaryRow from "../molecules/SummaryRow";
 
 const CartSummary = () => {
+  const total = useAppSelector(cartTotalPriceSelector);
+  const shippingCost = useAppSelector((state) => state.cart.shippingCost);
+
   return (
     <Paper className="shadow" sx={{ p: 3 }}>
       <Typography variant="h6" fontWeight="bold" gutterBottom mb={3}>
         Summary
       </Typography>
-      <SummaryRow label="Subtotal" value={2300} />
-      <SummaryRow label="Shipping" value="Free" />
+      <SummaryRow label="Subtotal" value={total} />
+      <SummaryRow label="Shipping" value={shippingCost} />
       <Divider sx={{ mt: 2, mb: 3 }} />
-      <SummaryRow label="Total" value={2300} />
+      <SummaryRow label="Total" value={total} />
 
       <RoundedButton
         variant="contained"

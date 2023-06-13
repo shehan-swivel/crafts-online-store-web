@@ -32,15 +32,15 @@ const MainAppBar = ({}: MainAppBarProps) => {
     <AppBar position="static" color="inherit">
       <Toolbar>
         <NextLink href="/">
-          <Logo width={200} height={64} />
+          <Logo width={180} height={32} />
         </NextLink>
 
-        <Box flexGrow={1}>
+        <Box flexGrow={1} pl={3}>
           {menuItems.map((menu) => (
             <Link
               href={menu.to}
               key={menu.to}
-              mr={4}
+              mr={3}
               component={NextLink}
               underline="none"
               fontWeight="bold"

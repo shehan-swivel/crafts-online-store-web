@@ -42,13 +42,11 @@ export const addProduct = createAsyncThunk("employees/addProduct", async (data: 
   }
 });
 
-// Get product by id action
 export const getProductById = createAsyncThunk("employees/getProductById", async (id: string) => {
   const response = await productService.getProductById(id);
   return response.data;
 });
 
-// Update employee action
 export const updateProduct = createAsyncThunk(
   "employees/updateProduct",
   async ({ id, data }: { id: string; data: FormData }, thunkAPI) => {
@@ -63,7 +61,6 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
-// Delete product action
 export const deleteProduct = createAsyncThunk("employees/deleteProduct", async (id: string, thunkAPI) => {
   try {
     const response = await productService.deleteProduct(id);

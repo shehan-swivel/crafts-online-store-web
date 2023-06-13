@@ -13,6 +13,7 @@ export type Product = {
 export type ProductQuery = {
   name?: string;
   category?: ProductCategory;
+  limit?: number;
 };
 
 export type TableHeaderCell = {

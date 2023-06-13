@@ -15,6 +15,7 @@ const Footer = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   justifyContent: "center",
   padding: theme.spacing(4),
+  height: 296,
 }));
 
 const Divider = styled("div")({

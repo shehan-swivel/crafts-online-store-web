@@ -2,6 +2,7 @@ import { orderService } from "@/services";
 import { Order } from "@/types";
 import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
+import { clearCart } from "./cart-slice";
 
 const dummyData: Order[] = [
   {
@@ -98,6 +99,7 @@ const dummyData: Order[] = [
 
 type OrderSlice = {
   all: { data: Order[]; loading: boolean };
+  submit: { loading: boolean; success: boolean };
 };
 
 const initialState: OrderSlice = {
@@ -105,12 +107,28 @@ const initialState: OrderSlice = {
     data: [...dummyData],
     loading: false,
   },
+  submit: {
+    loading: false,
+    success: false,
+  },
 };
 
 /* Orders actions */
 export const getOrders = createAsyncThunk("orders/getOrders", async () => {
   const response = await orderService.getOrders();
   return response.data;
+});
+
+export const createOrder = createAsyncThunk("employees/createOrder", async (data: Order, { dispatch }) => {
+  try {
+    const response = await orderService.createOrder(data);
+    await dispatch(clearCart()); // Clear cart after successful submission
+    // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+    return response.data;
+  } catch (error: any) {
+    // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+    throw error;
+  }
 });
 
 const orderSlice = createSlice({
@@ -133,6 +151,20 @@ const orderSlice = createSlice({
     });
     builder.addCase(getOrders.rejected, (state) => {
       state.all.loading = false;
+    });
+
+    // Create order reducers
+    builder.addCase(createOrder.pending, (state) => {
+      state.submit.loading = true;
+      state.submit.success = false;
+    });
+    builder.addCase(createOrder.fulfilled, (state) => {
+      state.submit.loading = false;
+      state.submit.success = true;
+    });
+    builder.addCase(createOrder.rejected, (state) => {
+      state.submit.loading = false;
+      state.submit.success = false;
     });
   },
 });

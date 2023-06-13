@@ -1,3 +1,5 @@
+import { Product } from "./product-types";
+
 export type CartItem = {
   _id: string;
   name: string;
@@ -8,5 +10,5 @@ export type CartItem = {
 };
 
 export type Cart = {
-  items: CartItem[];
+  items: Product[];
 };

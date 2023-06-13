@@ -9,6 +9,7 @@ type MainLayoutProps = {
 
 const Main = styled("main")(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
+  minHeight: "calc(100vh - 360px)",
 }));
 
 const MainLayout = ({ children }: MainLayoutProps) => {
