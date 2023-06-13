@@ -36,8 +36,8 @@ const Shop = ({ search, category }: ShopProps) => {
 
   const products = useAppSelector((state) => state.products.all.data);
 
-  const handlSearch = (searchText: string, category: string) => {
-    console.log(searchText, category);
+  const handleSearch = (searchText: string, category: string) => {
+    dispatch(getProducts({ name: searchText, category }));
   };
 
   const handleAdd = (item: Product) => {
@@ -48,7 +48,7 @@ const Shop = ({ search, category }: ShopProps) => {
     <>
       <TopBar>
         <SearchBarWrapper>
-          <SearchBar onSearch={handlSearch} search={search} category={category} />
+          <SearchBar onSearch={handleSearch} search={search} category={category} />
         </SearchBarWrapper>
       </TopBar>
 

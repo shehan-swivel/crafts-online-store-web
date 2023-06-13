@@ -5,7 +5,8 @@ import Link from "next/link";
 
 type CategoryCardProps = {
   name: string;
-  description: string;
+  description?: string;
+  image?: string;
 };
 
 const CategoryCardWrapper = styled(Link)({
@@ -34,15 +35,14 @@ const ContentWrapper = styled("div")({
   position: "absolute",
   transition: "all 0.5s ease",
   backgroundColor: "rgba(0, 0, 0, 0.5)",
-  backdropFilter: "blur(5px)",
-  borderRadius: 10,
+  borderRadius: 8,
   pointerEvents: "none",
 });
 
-const CategoryCard = ({ name, description }: CategoryCardProps) => {
+const CategoryCard = ({ name, description, image }: CategoryCardProps) => {
   return (
     <CategoryCardWrapper className="rounded" href={{ pathname: "/shop", query: { category: name } }}>
-      <Image className="rounded" alt="category" src="/image.jpg" fill style={{ objectFit: "cover" }} />
+      <Image className="rounded" alt="category" src={image!} fill style={{ objectFit: "cover" }} />
       <ContentWrapper>
         <Typography variant="h5" fontWeight="bold" color="primary.contrastText" textTransform="capitalize">
           {name.toLowerCase()}

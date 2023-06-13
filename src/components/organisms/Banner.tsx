@@ -19,7 +19,7 @@ const ContentWrapper = styled("div")({
 const Banner = () => {
   const router = useRouter();
 
-  const search = (searchText: string, category: string) => {
+  const handleSearch = (searchText: string, category: string) => {
     router.push({ pathname: "/shop", query: { search: searchText, category } });
   };
 
@@ -48,7 +48,7 @@ const Banner = () => {
           world of creativity and craftsmanship. Explore now!
         </Typography>
 
-        <SearchBar onSearch={search} />
+        <SearchBar onSearch={handleSearch} />
       </ContentWrapper>
     </div>
   );

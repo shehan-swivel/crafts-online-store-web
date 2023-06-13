@@ -12,26 +12,12 @@ import { getProducts } from "@/store/slices/product-slice";
 import { addToCart } from "@/store/slices/cart-slice";
 import { Product } from "@/types";
 import useAppDispatch from "@/hooks/useAppDispatch";
+import { CATEGORIES } from "@/constants";
 
 export default function Home() {
   const dispatch = useAppDispatch();
 
   const products = useAppSelector((state) => state.products.all.data);
-
-  const categories = [
-    {
-      name: "Clay",
-      description: "Embrace the art of molding and sculpting",
-    },
-    {
-      name: "Textiles",
-      description: "Dive into endless fabric creativity",
-    },
-    {
-      name: "Wood",
-      description: "Discover the beauty of woodworking",
-    },
-  ];
 
   const handleAdd = (item: Product) => {
     dispatch(addToCart(item));
@@ -66,9 +52,13 @@ export default function Home() {
           Find by Categories
         </Typography>
         <Grid container spacing={4}>
-          {categories.map((category) => (
+          {CATEGORIES.map((category) => (
             <Grid item key={category.name} xs={12} sm={6} md={4}>
-              <CategoryCard name={category.name} description={category.description} />
+              <CategoryCard
+                name={category.name}
+                description={category.description}
+                image={category.image}
+              />
             </Grid>
           ))}
         </Grid>

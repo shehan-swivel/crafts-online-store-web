@@ -12,7 +12,7 @@ export type Product = {
 
 export type ProductQuery = {
   name?: string;
-  category?: ProductCategory;
+  category?: ProductCategory | string;
   limit?: number;
 };
 

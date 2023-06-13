@@ -21,3 +21,30 @@ export const StorageKeys = {
 };
 
 export const DEFAULT_IMAGE = "https://via.placeholder.com/300x200?text=Image";
+
+export const CATEGORIES = Object.values(ProductCategory).map((category) => {
+  let description, image;
+
+  switch (category) {
+    case ProductCategory.CLAY:
+      description = "Embrace the art of molding and sculpting";
+      image = "/clay.jpg";
+      break;
+    case ProductCategory.TEXTILES:
+      description = "Dive into endless fabric creativity";
+      image = "/textiles.jpg";
+      break;
+    case ProductCategory.WOOD:
+      description = "Discover the beauty of woodworking";
+      image = "/wood.jpg";
+      break;
+    default:
+      break;
+  }
+
+  return {
+    name: category,
+    description,
+    image,
+  };
+});

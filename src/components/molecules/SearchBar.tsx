@@ -43,15 +43,16 @@ const SearchBar = ({ search, category, onSearch }: SearchBarProps) => {
         variant="standard"
         disableUnderline
         displayEmpty
-        renderValue={(value) => (value !== "" ? value : "Category")}
+        sx={{ textTransform: "capitalize" }}
+        renderValue={(value) => (value !== "" ? value.toLowerCase() : "Category")}
         onChange={(e) => setCategoryValue(e.target.value)}
       >
         <MenuItem value="">
           <em>All</em>
         </MenuItem>
         {Object.entries(ProductCategory).map(([key, value]) => (
-          <MenuItem key={value} value={value}>
-            {key}
+          <MenuItem key={value} value={value} sx={{ textTransform: "capitalize" }}>
+            {value.toLowerCase()}
           </MenuItem>
         ))}
       </Select>
