@@ -31,7 +31,7 @@ export const getProducts = createAsyncThunk("products/getProducts", async (query
   return response.data;
 });
 
-export const addProduct = createAsyncThunk("employees/addProduct", async (data: FormData, thunkAPI) => {
+export const addProduct = createAsyncThunk("products/addProduct", async (data: FormData, thunkAPI) => {
   try {
     const response = await productService.addProduct(data);
     // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
@@ -42,13 +42,13 @@ export const addProduct = createAsyncThunk("employees/addProduct", async (data: 
   }
 });
 
-export const getProductById = createAsyncThunk("employees/getProductById", async (id: string) => {
+export const getProductById = createAsyncThunk("products/getProductById", async (id: string) => {
   const response = await productService.getProductById(id);
   return response.data;
 });
 
 export const updateProduct = createAsyncThunk(
-  "employees/updateProduct",
+  "products/updateProduct",
   async ({ id, data }: { id: string; data: FormData }, thunkAPI) => {
     try {
       const response = await productService.updateProduct(id, data);
@@ -61,7 +61,7 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
-export const deleteProduct = createAsyncThunk("employees/deleteProduct", async (id: string, thunkAPI) => {
+export const deleteProduct = createAsyncThunk("products/deleteProduct", async (id: string, thunkAPI) => {
   try {
     const response = await productService.deleteProduct(id);
     // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));

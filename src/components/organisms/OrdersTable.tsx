@@ -1,14 +1,20 @@
+import { OrderStatus } from "@/constants";
+import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
+import { deleteOrder, updateOrderStatus } from "@/store/slices/order-slice";
 import { Address, Order, OrderItem, TableHeaderCell } from "@/types";
+import { capitalizeText, formatPrice } from "@/utils/common-utiils";
 import { formatDate } from "@/utils/date-time-utils";
-import { formatPrice } from "@/utils/common-utiils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownTwoTone";
 import KeyboardArrowUpTwoToneIcon from "@mui/icons-material/KeyboardArrowUpTwoTone";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -19,6 +25,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { useMemo, useState } from "react";
 import DescriptionItem from "../molecules/DescriptionItem";
+import EmptyResult from "../molecules/EmptyResult";
 
 type OrderItemProps = {
   items: OrderItem[];
@@ -94,9 +101,15 @@ const OrdersTable = () => {
         </TableHead>
 
         <TableBody>
-          {orders.map((order) => (
-            <Row key={order._id} row={order} />
-          ))}
+          {orders.length ? (
+            orders.map((order) => <Row key={order._id} row={order} />)
+          ) : (
+            <TableRow>
+              <TableCell colSpan={12}>
+                <EmptyResult />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
@@ -105,33 +118,97 @@ const OrdersTable = () => {
 
 const Row = ({ row }: RowProps) => {
   const { confirm } = useConfirm();
+  const dispatch = useAppDispatch();
 
   const [showItems, setShowItems] = useState(false);
   const [showNote, setShowNote] = useState(false);
   const [showCustomerDetails, setShowCustomerDetails] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClickStatus = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuItemClick = async (value: OrderStatus) => {
+    const isConfirmed = await confirm(
+      `Are you sure you want to update status to ${capitalizeText(value)} ?`
+    );
+
+    if (isConfirmed) {
+      dispatch(updateOrderStatus({ id: row._id!, status: value }));
+    }
+
+    setAnchorEl(null);
+  };
 
   // Get user confirmation before delete
   const confirmDelete = async (order: Order) => {
     const isConfirmed = await confirm("Are you sure you want to delete this record ?");
 
     if (isConfirmed) {
-      console.log("Delete order");
+      dispatch(deleteOrder(order._id!));
     }
   };
+
+  const statusColor = useMemo(() => {
+    const colorMap = {
+      [OrderStatus.PENDING]: "primary",
+      [OrderStatus.PROCESSING]: "warning",
+      [OrderStatus.COMPLETED]: "success",
+      [OrderStatus.CANCELLED]: "error",
+    };
+
+    if (row.status) {
+      return colorMap[row.status];
+    } else {
+      return "default";
+    }
+  }, [row]);
+
+  const open = Boolean(anchorEl);
 
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>{formatDate(row.createdAt)}</TableCell>
+        <TableCell>{formatDate(row.createdAt!)}</TableCell>
         <TableCell align="right">
           <Typography variant="body2" fontWeight="bold" color="error">
-            {formatPrice(row.amount)}
+            {formatPrice(row.amount!)}
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography variant="body2" color="primary">
-            {row.status}
-          </Typography>
+          <Chip
+            label={row.status?.toLowerCase()}
+            color={statusColor}
+            component={Typography}
+            textTransform="capitalize"
+            aria-haspopup="listbox"
+            aria-controls="order-status-menu"
+            aria-label="order status"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClickStatus}
+          />
+          <Menu
+            id="order-status-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{ role: "listbox" }}
+          >
+            {Object.values(OrderStatus).map((option) => (
+              <MenuItem
+                key={option}
+                selected={option === row.status}
+                onClick={() => handleMenuItemClick(option)}
+              >
+                {capitalizeText(option)}
+              </MenuItem>
+            ))}
+          </Menu>
         </TableCell>
 
         <TableCell align="center">
@@ -208,7 +285,7 @@ const OrderItems = ({ items }: OrderItemProps) => (
       </TableHead>
       <TableBody>
         {items.map((orderItem) => (
-          <TableRow key={orderItem.product._id}>
+          <TableRow key={orderItem.product._id!}>
             <TableCell>{orderItem.product.name}</TableCell>
             <TableCell align="right">{orderItem.qty}</TableCell>
             <TableCell align="right">{formatPrice(orderItem.product.price)}</TableCell>

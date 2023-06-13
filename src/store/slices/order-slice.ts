@@ -3,99 +3,7 @@ import { Order } from "@/types";
 import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { clearCart } from "./cart-slice";
-
-const dummyData: Order[] = [
-  {
-    amount: 481.77,
-    status: "PENDING",
-    items: [
-      {
-        product: {
-          _id: "647efd9632110a1658c454f2",
-          name: "craft 1",
-          description: "my awesome desc",
-          qty: 161,
-          price: 100,
-          category: "CLAY",
-          createdAt: "2023-06-06T09:34:14.534Z",
-          updatedAt: "2023-06-07T06:04:37.346Z",
-        },
-        qty: 2,
-      },
-      {
-        product: {
-          _id: "647efda932110a1658c454f4",
-          name: "craft 2",
-          description: "my awesome desc",
-          qty: 41,
-          price: 450,
-          category: "WOOD",
-          createdAt: "2023-06-06T09:34:33.749Z",
-          updatedAt: "2023-06-07T06:04:37.351Z",
-        },
-        qty: 1,
-      },
-    ],
-    note: "Make this fast",
-    customerName: "Kay Funk",
-    phoneNumber: "94713771735",
-    email: "shehanrnet@gmail.com",
-    billingAddress: {
-      street: "9007 Ephraim Prairie",
-      city: "Port Lonieburgh",
-      state: "Keithview",
-      postalCode: "925",
-    },
-    _id: "647efdc532110a1658c454f8",
-    createdAt: "2023-06-06T09:35:01.269Z",
-    updatedAt: "2023-06-06T09:35:01.269Z",
-  },
-  {
-    amount: 481.77,
-    status: "PENDING",
-    items: [
-      {
-        product: {
-          _id: "647efd9632110a1658c454f2",
-          name: "craft 1",
-          description: "my awesome desc",
-          qty: 161,
-          price: 100,
-          category: "CLAY",
-          createdAt: "2023-06-06T09:34:14.534Z",
-          updatedAt: "2023-06-07T06:04:37.346Z",
-        },
-        qty: 3,
-      },
-      {
-        product: {
-          _id: "647efda932110a1658c454f4",
-          name: "craft 2",
-          description: "my awesome desc",
-          qty: 41,
-          price: 450,
-          category: "WOOD",
-          createdAt: "2023-06-06T09:34:33.749Z",
-          updatedAt: "2023-06-07T06:04:37.351Z",
-        },
-        qty: 1,
-      },
-    ],
-    note: "Make this fast",
-    customerName: "Kay Funk",
-    phoneNumber: "94713771735",
-    email: "shehanrnet@gmail.com",
-    billingAddress: {
-      street: "9007 Ephraim Prairie",
-      city: "Port Lonieburgh",
-      state: "Keithview",
-      postalCode: "925",
-    },
-    _id: "647efdc532110a1658c454f9",
-    createdAt: "2023-06-06T09:35:01.269Z",
-    updatedAt: "2023-06-06T09:35:01.269Z",
-  },
-];
+import { OrderStatus } from "@/constants";
 
 type OrderSlice = {
   all: { data: Order[]; loading: boolean };
@@ -104,7 +12,7 @@ type OrderSlice = {
 
 const initialState: OrderSlice = {
   all: {
-    data: [...dummyData],
+    data: [],
     loading: false,
   },
   submit: {
@@ -119,12 +27,37 @@ export const getOrders = createAsyncThunk("orders/getOrders", async () => {
   return response.data;
 });
 
-export const createOrder = createAsyncThunk("employees/createOrder", async (data: Order, { dispatch }) => {
+export const createOrder = createAsyncThunk("orders/createOrder", async (data: Order, { dispatch }) => {
   try {
     const response = await orderService.createOrder(data);
     await dispatch(clearCart()); // Clear cart after successful submission
     // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
     return response.data;
+  } catch (error: any) {
+    // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+    throw error;
+  }
+});
+
+export const updateOrderStatus = createAsyncThunk(
+  "orders/updateOrderStatus",
+  async ({ id, status }: { id: string; status: OrderStatus }, thunkAPI) => {
+    try {
+      const response = await orderService.updateOrderStatus(id, status);
+      // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+      return response.data;
+    } catch (error: any) {
+      // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+      throw error;
+    }
+  }
+);
+
+export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id: string, thunkAPI) => {
+  try {
+    const response = await orderService.deleteOrder(id);
+    // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+    return id;
   } catch (error: any) {
     // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
     throw error;
@@ -165,6 +98,30 @@ const orderSlice = createSlice({
     builder.addCase(createOrder.rejected, (state) => {
       state.submit.loading = false;
       state.submit.success = false;
+    });
+
+    // Update order status reducers
+    builder.addCase(updateOrderStatus.pending, (state) => {
+      state.submit.loading = true;
+      state.submit.success = false;
+    });
+    builder.addCase(updateOrderStatus.fulfilled, (state, { payload }) => {
+      const index = state.all.data.findIndex((el) => el._id === payload.data._id);
+      if (index >= 0) {
+        state.all.data[index] = payload.data;
+      }
+
+      state.submit.loading = false;
+      state.submit.success = true;
+    });
+    builder.addCase(updateOrderStatus.rejected, (state) => {
+      state.submit.loading = false;
+      state.submit.success = false;
+    });
+
+    // Delete order reducers
+    builder.addCase(deleteOrder.fulfilled, (state, { payload }) => {
+      state.all.data = state.all.data.filter((el) => el._id !== payload);
     });
   },
 });

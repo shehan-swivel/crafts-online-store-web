@@ -29,6 +29,7 @@ const Cart = () => {
   } else {
     return (
       <EmptyResult
+        variant="h6"
         message="Your cart is empty"
         icon={<ProductionQuantityLimitsTwoToneIcon color="disabled" fontSize="large" />}
         action={

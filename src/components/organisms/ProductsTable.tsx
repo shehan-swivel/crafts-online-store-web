@@ -23,6 +23,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import { useState } from "react";
+import EmptyResult from "../molecules/EmptyResult";
 
 type ProductsTableProps = {
   onEdit: (row: Product) => void;
@@ -70,7 +71,7 @@ const ProductsTable = ({ onEdit }: ProductsTableProps) => {
 
   return (
     <TableContainer className="shadow" component={Paper}>
-      <Table sx={{ minHeight: 200 }} aria-label="products table">
+      <Table aria-label="products table">
         <TableHead>
           <TableRow>
             {headerCells.map((cell) => (
@@ -82,9 +83,15 @@ const ProductsTable = ({ onEdit }: ProductsTableProps) => {
         </TableHead>
 
         <TableBody>
-          {products.map((product) => (
-            <Row key={product._id} row={product} onEdit={onEdit} />
-          ))}
+          {products.length ? (
+            products.map((product) => <Row key={product._id} row={product} onEdit={onEdit} />)
+          ) : (
+            <TableRow>
+              <TableCell colSpan={12}>
+                <EmptyResult />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
