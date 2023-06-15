@@ -38,6 +38,12 @@ const theme = createTheme({
       },
     },
   },
+  gradients: {
+    blue: "linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)",
+    purple: "linear-gradient(135deg, #43CBFF 0%, #9708CC 100%)",
+    orange1: "linear-gradient(135deg, #FCCF31 0%, #F55555 100%)",
+    orange2: "linear-gradient(135deg, #FFD3A5 0%, #FD6585 100%)",
+  },
 });
 
 export default theme;

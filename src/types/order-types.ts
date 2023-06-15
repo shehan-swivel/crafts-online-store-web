@@ -27,3 +27,8 @@ export type Order = {
   shippingAddress?: Address;
   createdAt?: string;
 };
+
+export type OrderChartItem = {
+  date: string;
+  count: number;
+};
