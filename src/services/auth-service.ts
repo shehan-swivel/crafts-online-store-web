@@ -1,6 +1,7 @@
 import { ChangePassword, Login } from "@/types";
 import apiService from "./api-service";
 import { StorageKeys } from "@/constants";
+import { removeCookie, setCookie } from "@/utils/cookie-utils";
 
 const PREFIX = "/v1/auth";
 
@@ -9,7 +10,6 @@ export const authService = {
   getCurrentUser,
   changePassword,
   logout,
-  refreshTokens,
 };
 
 /**
@@ -18,8 +18,10 @@ export const authService = {
  */
 async function login(data: Login) {
   const response = await apiService.post(`${PREFIX}/login`, data);
-  // Save access token in the local storage
-  // localStorage.setItem(StorageKeys.ACCESS_TOKEN, response.data.data.accessToken);
+  const { accessToken, refreshToken } = response.data.data;
+  // Save tokens as cookies
+  setCookie(StorageKeys.ACCESS_TOKEN, accessToken);
+  setCookie(StorageKeys.REFRESH_TOKEN, refreshToken);
   return response;
 }
 
@@ -39,17 +41,9 @@ function changePassword(data: ChangePassword) {
 }
 
 /**
- * Refresh tokens
- * @param {string} refreshToken
- */
-function refreshTokens(refreshToken: string) {
-  return apiService.get(`${PREFIX}/refresh`, { headers: { Authorization: `Bearer ${refreshToken}` } });
-}
-
-/**
  * Logout user
  */
 function logout() {
-  localStorage.removeItem(StorageKeys.ACCESS_TOKEN);
+  removeCookie(StorageKeys.ACCESS_TOKEN);
   return true;
 }

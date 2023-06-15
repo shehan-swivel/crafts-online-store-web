@@ -1,6 +1,6 @@
 import SpinnerIcon from "@/components/atoms/SpinnerIcon";
 import AuthLayout from "@/components/templates/AuthLayout";
-import { authService } from "@/services";
+import useAuth from "@/hooks/useAuth";
 import { Login } from "@/types";
 import { loginFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ReactNode, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -30,26 +29,21 @@ const Login = () => {
   });
 
   const router = useRouter();
+  const auth = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitForm = async (values: Login) => {
     try {
       setIsSubmitting(true);
-      // const response = await authService.login(values);
-      await signIn("credentials", {
-        username: values.username,
-        password: values.password,
-        redirect: true,
-        callbackUrl: "/dashboard",
-      });
+      const response = await auth.login(values);
 
       // Redirect to the Password Change page if password change is required, otherwise redirect to the dashboard
-      // if (response.data.data.requirePasswordChange) {
-      //   router.push("/change-password");
-      // } else {
-      //   router.push("/dashboard");
-      // }
+      if (response.data.data?.user?.requirePasswordChange) {
+        router.push("/change-password");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (error) {
     } finally {
       setIsSubmitting(false);

@@ -21,7 +21,7 @@ export const cartService = {
  */
 function getCart(): Cart {
   const cart = getCookie(StorageKeys.CART);
-  return cart ? JSON.parse(cart) : { items: [] };
+  return cart ? cart : { items: [] };
 }
 
 /**
@@ -38,7 +38,7 @@ function addToCart(newItem: Product): Cart {
   } else {
     newItem = { ...newItem, qty: 1 };
     cart.items.push(newItem);
-    setCookie(StorageKeys.CART, JSON.stringify(cart), { expires: 7 });
+    setCookie(StorageKeys.CART, cart, { expires: 7 });
   }
 
   return cart;
@@ -50,7 +50,7 @@ function addToCart(newItem: Product): Cart {
 function removeFromCart(id: string): Cart {
   const cart = getCart();
   cart.items = cart.items.filter((item) => item._id !== id);
-  setCookie(StorageKeys.CART, JSON.stringify(cart), { expires: 7 });
+  setCookie(StorageKeys.CART, cart, { expires: 7 });
   return cart;
 }
 
@@ -64,7 +64,7 @@ function updateCart(id: string, qty: number): Cart {
   if (index >= 0) {
     const updatedItem = { ...cart.items[index], qty };
     cart.items[index] = updatedItem;
-    setCookie(StorageKeys.CART, JSON.stringify(cart), { expires: 7 });
+    setCookie(StorageKeys.CART, cart, { expires: 7 });
   }
 
   return cart;

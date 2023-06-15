@@ -6,8 +6,13 @@ import Alert from "@mui/material/Alert";
 import ChangePasswordForm from "@/components/organisms/ChangePasswordForm";
 import Button from "@mui/material/Button";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ChangePassword = () => {
+  const router = useRouter();
+
+  const handleSuccess = () => router.push("/dashboard");
+
   return (
     <>
       <Typography variant="h5" gutterBottom mb={3} fontWeight="bold">
@@ -19,7 +24,7 @@ const ChangePassword = () => {
           You are required to change the default password.
         </Alert>
 
-        <ChangePasswordForm />
+        <ChangePasswordForm onSuccess={handleSuccess} />
         <Button
           variant="text"
           LinkComponent={Link}

@@ -1,49 +1,63 @@
+import { StorageKeys } from "@/constants";
+import { getCookie, setCookie } from "@/utils/cookie-utils";
 import axios from "axios";
-import { getSession } from "next-auth/react";
+
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 const apiService = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// apiService.interceptors.request.use(
-//   async (config) => {
-//     console.log("headers");
-//     const { data: session } = useSession();
+apiService.interceptors.request.use(
+  async (config) => {
+    const token = getCookie(StorageKeys.ACCESS_TOKEN);
 
-//     if (!config.headers["Authorization"]) {
-//       config.headers["Authorization"] = `Bearer 3453465456`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
-// apiService.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const { data: session } = useSession();
+apiService.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalConfig = error.config;
 
-//     const prevRequest = error?.config;
+    if (error.response) {
+      // Check whether access token expired or not
+      if (error.response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true;
 
-//     if (error?.response?.status === 401 && !prevRequest?.sent) {
-//       prevRequest.sent = true;
+        // Refresh tokens when access token is expired using refresh token
+        try {
+          const token = getCookie(StorageKeys.REFRESH_TOKEN);
 
-//       const response = await authService.refreshTokens(session?.user?.refreshToken as string);
+          const response = await axios.get(`${baseURL}/v1/auth/refresh`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
-//       if (session) {
-//         session.user.accessToken = response.data.data.accessToken;
-//         session.user.refreshToken = response.data.data.refreshToken;
-//       }
+          const { accessToken, refreshToken } = response.data.data;
 
-//       prevRequest.headers["Authorization"] = `Bearer ${session?.user?.accessToken}`;
-//       return apiService(prevRequest);
-//     }
+          // Update stored tokens
+          setCookie(StorageKeys.ACCESS_TOKEN, accessToken);
+          setCookie(StorageKeys.REFRESH_TOKEN, refreshToken);
 
-//     return Promise.reject(error);
-//   }
-// );
+          return apiService(originalConfig);
+        } catch (_error) {
+          return Promise.reject(_error);
+        }
+      }
+
+      return Promise.reject(error.response.data);
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default apiService;

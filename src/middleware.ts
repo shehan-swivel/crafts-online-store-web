@@ -1,22 +1,15 @@
-// import { withAuth } from "next-auth/middleware";
-// import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { StorageKeys } from "./constants";
 
-// export default withAuth(
-//   function middleware(req) {
-//     console.log("token: ", req.nextauth.token);
+export function middleware(request: NextRequest) {
+  const cookie = request.cookies.get(StorageKeys.ACCESS_TOKEN)?.value;
 
-//     if (req.nextUrl.pathname.startsWith("/dashboard") /*&& req.nextauth.token?.role !== "ADMIN"*/)
-//       return NextResponse.rewrite(new URL("/login?message=You Are Not Authorized!", req.url));
-//   },
-//   {
-//     callbacks: {
-//       authorized: ({ token }) => !!token,
-//     },
-//   }
-// );
-
-export { default } from "next-auth/middleware";
+  if (!cookie) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+}
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: "/dashboard/:path*",
 };

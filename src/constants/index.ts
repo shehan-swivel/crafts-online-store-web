@@ -18,6 +18,7 @@ export enum Role {
 export const StorageKeys = {
   CART: "cart",
   ACCESS_TOKEN: "access_token",
+  REFRESH_TOKEN: "refresh_token",
 };
 
 export const DEFAULT_IMAGE = "https://via.placeholder.com/300x200?text=Image";

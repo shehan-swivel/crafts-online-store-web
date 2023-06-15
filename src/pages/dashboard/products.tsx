@@ -3,12 +3,12 @@ import AppDialog from "@/components/molecules/AppDialog";
 import ProductForm from "@/components/organisms/ProductForm";
 import ProductsTable from "@/components/organisms/ProductsTable";
 import AdminLayout from "@/components/templates/AdminLayout";
-import { wrapper } from "@/store";
+import useAppDispatch from "@/hooks/useAppDispatch";
 import { getProducts } from "@/store/slices/product-slice";
 import { Product } from "@/types";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import Button from "@mui/material/Button";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 const initialValues: Product = {
   name: "",
@@ -20,6 +20,8 @@ const initialValues: Product = {
 };
 
 const Products = () => {
+  const dispatch = useAppDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
   const [isEdit, setIsEdit] = useState(false);
@@ -42,6 +44,11 @@ const Products = () => {
   const handleCloseDialog = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    dispatch(getProducts({}));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -72,13 +79,5 @@ const Products = () => {
 Products.getLayout = function getLayout(page: ReactNode) {
   return <AdminLayout>{page}</AdminLayout>;
 };
-
-export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
-  await store.dispatch(getProducts({}));
-
-  return {
-    props: {},
-  };
-});
 
 export default Products;

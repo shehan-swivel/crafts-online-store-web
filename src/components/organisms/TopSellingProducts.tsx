@@ -27,7 +27,7 @@ const TopSellingProducts = ({ products }: TopSellingProductsProps) => {
       </CardContent>
       <Divider />
       <List>
-        {products.map((product, index) => (
+        {products?.map((product, index) => (
           <React.Fragment key={product.name}>
             <ListItem
               secondaryAction={

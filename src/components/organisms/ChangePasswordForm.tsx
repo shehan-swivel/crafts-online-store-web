@@ -1,3 +1,4 @@
+import useAuth from "@/hooks/useAuth";
 import { ChangePassword } from "@/types";
 import { passwordChangeFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -5,7 +6,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import SpinnerIcon from "../atoms/SpinnerIcon";
+
+type ChangePasswordFormProps = {
+  onSuccess?: () => void;
+};
 
 const defaultValues = {
   currentPassword: "",
@@ -13,18 +20,34 @@ const defaultValues = {
   confirmPassword: "",
 };
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ChangePassword>({
     defaultValues,
     resolver: yupResolver(passwordChangeFormSchema),
   });
 
-  const submitForm = (values: ChangePassword) => {
-    console.log({ values });
+  const auth = useAuth();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submitForm = async (values: ChangePassword) => {
+    try {
+      setIsSubmitting(true);
+      await auth.changePassword(values);
+      reset(); // Reset form
+
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,8 +105,8 @@ const ChangePasswordForm = () => {
       </Grid>
 
       <Box mt={1} display="flex" justifyContent="flex-end">
-        <Button fullWidth type="submit" variant="contained" disableElevation>
-          Change Password
+        <Button fullWidth type="submit" variant="contained" disableElevation disabled={isSubmitting}>
+          {isSubmitting ? <SpinnerIcon /> : "Change Password"}
         </Button>
       </Box>
     </Box>
