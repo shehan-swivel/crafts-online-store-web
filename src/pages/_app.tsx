@@ -10,18 +10,43 @@ import CssBaseline from "@mui/material/CssBaseline";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import type { ReactNode } from "react";
+import NProgress from "nprogress";
+import Router from "next/router";
+import { useEffect, type ReactNode } from "react";
 import { Provider } from "react-redux";
 
 import "@/styles/globals.css";
+import "nprogress/nprogress.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+NProgress.configure({ showSpinner: false });
 
 const clientSideEmotionCache = createEmotionCache();
 
 export default function App({ Component, ...otherProps }: AppProps) {
   const { store, props } = wrapper.useWrappedStore(otherProps);
   const { emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  // Start to show top loading bar
+  const handleRouteStart = () => NProgress.start();
+
+  // Finish and hide top loading bar
+  const handleRouteDone = () => NProgress.done();
+
+  useEffect(() => {
+    // Subscribe route change events when mount the app
+    Router.events.on("routeChangeStart", handleRouteStart);
+    Router.events.on("routeChangeComplete", handleRouteDone);
+    Router.events.on("routeChangeError", handleRouteDone);
+
+    return () => {
+      // Unsubscribe route change events when unmount the app
+      Router.events.off("routeChangeStart", handleRouteStart);
+      Router.events.off("routeChangeComplete", handleRouteDone);
+      Router.events.off("routeChangeError", handleRouteDone);
+    };
+  }, []);
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page: ReactNode) => page);
@@ -32,7 +57,7 @@ export default function App({ Component, ...otherProps }: AppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <meta name="description" content="Crafts Online Store" />
         <link rel="icon" href="/favicon.ico" />
-        <title>Crafts Online Store</title>
+        <title>Craftify</title>
       </Head>
 
       <main className={inter.className}>

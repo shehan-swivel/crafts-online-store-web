@@ -37,3 +37,8 @@ body {
     transform: rotate(360deg);
   }
 }
+
+#nprogress .bar {
+  background: #38b42d !important;
+  z-index: 1202 !important;
+}

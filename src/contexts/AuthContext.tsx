@@ -106,7 +106,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const providerValue = useMemo(() => ({ ...state, login, logout, changePassword }), [state]);
 
   if (!state.isInitialised) {
-    return "loading...";
+    return null;
   } else {
     return <AuthContext.Provider value={providerValue}>{children}</AuthContext.Provider>;
   }

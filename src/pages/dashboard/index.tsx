@@ -1,3 +1,4 @@
+import DashboardLoader from "@/components/molecules/DashboardLoader";
 import StatCard from "@/components/molecules/StatCard";
 import OrdersChart from "@/components/organisms/OrdersChart";
 import TopSellingProducts from "@/components/organisms/TopSellingProducts";
@@ -18,15 +19,15 @@ const Dashboard = () => {
   const auth = useAuth();
   const dispatch = useAppDispatch();
 
-  const data = useAppSelector((state) => state.stats.analytics.data);
+  const { data, loading } = useAppSelector((state) => state.stats.analytics);
 
   useEffect(() => {
     dispatch(getAnalytics());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!data) {
-    return null;
+  if (loading) {
+    return <DashboardLoader />;
   } else {
     return (
       <div>
