@@ -1,6 +1,7 @@
 import { ProductCategory } from "@/constants";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import Divider from "@mui/material/Divider";
+import { styled } from "@mui/material/styles";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputBase from "@mui/material/InputBase";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,6 +16,15 @@ type SearchBarProps = {
   onSearch: (searchValue: string, category: string) => void;
 };
 
+const SearchBarWrapper = styled(Paper)({
+  display: "flex",
+  padding: 16,
+  margin: "4px 12px",
+  borderRadius: 50,
+  maxWidth: 470,
+  height: 64,
+});
+
 const SearchBar = ({ search, category, onSearch }: SearchBarProps) => {
   const [searchValue, setSearchValue] = useState("");
   const [categoryValue, setCategoryValue] = useState<ProductCategory | string>("");
@@ -25,7 +35,7 @@ const SearchBar = ({ search, category, onSearch }: SearchBarProps) => {
   }, [category, search]);
 
   return (
-    <Paper className="shadow" sx={{ display: "flex", p: 2, borderRadius: 50, maxWidth: 470, height: 64 }}>
+    <SearchBarWrapper className="shadow">
       <InputBase
         startAdornment={
           <InputAdornment position="start">
@@ -66,7 +76,7 @@ const SearchBar = ({ search, category, onSearch }: SearchBarProps) => {
       >
         Search
       </RoundedButton>
-    </Paper>
+    </SearchBarWrapper>
   );
 };
 

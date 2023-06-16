@@ -32,7 +32,7 @@ const Dashboard = () => {
     return (
       <div>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <StatCard
               label="Total Orders"
               value={data?.totalOrders}
@@ -40,7 +40,7 @@ const Dashboard = () => {
               color={theme.gradients.blue}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <StatCard
               label="Pending Orders"
               value={data?.pendingOrders}
@@ -48,7 +48,7 @@ const Dashboard = () => {
               color={theme.gradients.purple}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <StatCard
               label="Total Products"
               value={data?.totalProducts}
@@ -56,7 +56,7 @@ const Dashboard = () => {
               color={theme.gradients.orange1}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} lg={3}>
             <StatCard
               label="Total Revenue"
               value={data?.totalRevenue}

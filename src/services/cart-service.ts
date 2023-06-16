@@ -58,6 +58,10 @@ function removeFromCart(id: string): Cart {
  * Update cart
  */
 function updateCart(id: string, qty: number): Cart {
+  if (qty < 1) {
+    return removeFromCart(id);
+  }
+
   const cart = getCart();
   const index = cart.items.findIndex((item) => item._id === id);
 

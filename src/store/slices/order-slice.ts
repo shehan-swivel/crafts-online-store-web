@@ -4,6 +4,7 @@ import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { clearCart } from "./cart-slice";
 import { OrderStatus } from "@/constants";
+import { showSnackbar } from "./ui-slice";
 
 type OrderSlice = {
   all: { data: Order[]; loading: boolean };
@@ -31,10 +32,10 @@ export const createOrder = createAsyncThunk("orders/createOrder", async (data: O
   try {
     const response = await orderService.createOrder(data);
     await dispatch(clearCart()); // Clear cart after successful submission
-    // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+    dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
     return response.data;
   } catch (error: any) {
-    // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+    dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
     throw error;
   }
 });
@@ -44,10 +45,10 @@ export const updateOrderStatus = createAsyncThunk(
   async ({ id, status }: { id: string; status: OrderStatus }, thunkAPI) => {
     try {
       const response = await orderService.updateOrderStatus(id, status);
-      // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+      thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
       return response.data;
     } catch (error: any) {
-      // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+      thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
       throw error;
     }
   }
@@ -56,10 +57,10 @@ export const updateOrderStatus = createAsyncThunk(
 export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id: string, thunkAPI) => {
   try {
     const response = await orderService.deleteOrder(id);
-    // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+    thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
     return id;
   } catch (error: any) {
-    // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+    thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
     throw error;
   }
 });

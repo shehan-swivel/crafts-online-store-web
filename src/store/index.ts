@@ -4,6 +4,7 @@ import productReducer from "./slices/product-slice";
 import orderReducer from "./slices/order-slice";
 import cartReducer from "./slices/cart-slice";
 import statReducer from "./slices/stat-slice";
+import uiReducer from "./slices/ui-slice";
 
 const store = () =>
   configureStore({
@@ -12,6 +13,7 @@ const store = () =>
       orders: orderReducer,
       cart: cartReducer,
       stats: statReducer,
+      ui: uiReducer,
     },
   });
 

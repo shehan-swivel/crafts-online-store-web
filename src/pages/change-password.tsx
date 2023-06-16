@@ -1,12 +1,12 @@
-import AuthLayout from "@/components/templates/AuthLayout";
-import React, { ReactNode } from "react";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
 import ChangePasswordForm from "@/components/organisms/ChangePasswordForm";
+import AuthLayout from "@/components/templates/AuthLayout";
+import Alert from "@mui/material/Alert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
 
 const ChangePassword = () => {
   const router = useRouter();

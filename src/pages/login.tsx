@@ -1,6 +1,8 @@
 import SpinnerIcon from "@/components/atoms/SpinnerIcon";
 import AuthLayout from "@/components/templates/AuthLayout";
+import useAppDispatch from "@/hooks/useAppDispatch";
 import useAuth from "@/hooks/useAuth";
+import { showSnackbar } from "@/store/slices/ui-slice";
 import { Login } from "@/types";
 import { loginFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,7 +20,7 @@ const defaultValues = {
   password: "",
 };
 
-const Login = () => {
+const LoginPage = () => {
   const {
     control,
     handleSubmit,
@@ -30,6 +32,7 @@ const Login = () => {
 
   const router = useRouter();
   const auth = useAuth();
+  const dispatch = useAppDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -44,7 +47,8 @@ const Login = () => {
       } else {
         router.push("/dashboard");
       }
-    } catch (error) {
+    } catch (error: any) {
+      dispatch(showSnackbar({ message: error.message, severity: "error" }));
     } finally {
       setIsSubmitting(false);
     }
@@ -110,8 +114,8 @@ const Login = () => {
   );
 };
 
-Login.getLayout = function getLayout(page: ReactNode) {
+LoginPage.getLayout = function getLayout(page: ReactNode) {
   return <AuthLayout>{page}</AuthLayout>;
 };
 
-export default Login;
+export default LoginPage;

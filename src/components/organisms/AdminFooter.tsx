@@ -1,6 +1,6 @@
 import { Paper, Typography } from "@mui/material";
 
-const Footer = () => {
+const AdminFooter = () => {
   return (
     <Paper
       component="footer"
@@ -8,10 +8,10 @@ const Footer = () => {
       sx={{ height: 48, display: "flex", alignItems: "center", justifyContent: "center" }}
     >
       <Typography textAlign="center" variant="caption" component="h6">
-        {new Date().getFullYear()} - <strong>Crafts Online Store</strong>
+        {new Date().getFullYear()} - <strong>Craftify.lk</strong>
       </Typography>
     </Paper>
   );
 };
 
-export default Footer;
+export default AdminFooter;

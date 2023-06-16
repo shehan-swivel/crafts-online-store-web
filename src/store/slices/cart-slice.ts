@@ -3,6 +3,7 @@ import { Product } from "@/types";
 import { Cart } from "@/types/cart-types";
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { AppState } from "../index";
+import { showSnackbar } from "./ui-slice";
 
 type CartSlice = {
   cart: Cart;
@@ -24,20 +25,23 @@ export const getCart = createAsyncThunk("cart/getCart", () => {
   return response;
 });
 
-export const addToCart = createAsyncThunk("cart/addToCart", (item: Product) => {
+export const addToCart = createAsyncThunk("cart/addToCart", (item: Product, { dispatch }) => {
   const response = cartService.addToCart(item);
+  dispatch(showSnackbar({ message: "Item added to cart", severity: "success" }));
   return response;
 });
 
-export const removeFromCart = createAsyncThunk("cart/removeFromCart", (id: string) => {
+export const removeFromCart = createAsyncThunk("cart/removeFromCart", (id: string, { dispatch }) => {
   const response = cartService.removeFromCart(id);
+  dispatch(showSnackbar({ message: "Item removed from the cart", severity: "success" }));
   return response;
 });
 
 export const updateCart = createAsyncThunk(
   "cart/updateCart",
-  ({ id, qty }: { id: string; qty: number }) => {
+  ({ id, qty }: { id: string; qty: number }, { dispatch }) => {
     const response = cartService.updateCart(id, qty);
+    dispatch(showSnackbar({ message: "Cart updated", severity: "success" }));
     return response;
   }
 );

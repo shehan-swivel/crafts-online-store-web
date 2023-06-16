@@ -3,10 +3,12 @@ import useConfirm from "@/hooks/useConfirm";
 import LogoutTwoToneIcon from "@mui/icons-material/LogoutTwoTone";
 import MenuTwoToneIcon from "@mui/icons-material/MenuTwoTone";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 type AdminAppBarProps = {
@@ -74,9 +76,20 @@ const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) =>
         >
           <MenuTwoToneIcon />
         </IconButton>
-        <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-          Online Crafts Store
-        </Typography>
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component={Link}
+            color="inherit"
+            fontWeight="bold"
+            noWrap
+            href="/"
+            sx={{ textDecoration: "none" }}
+          >
+            Craftify.lk
+          </Typography>
+        </Box>
+
         <IconButton color="inherit" onClick={logout}>
           <LogoutTwoToneIcon />
         </IconButton>

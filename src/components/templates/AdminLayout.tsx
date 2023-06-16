@@ -1,11 +1,10 @@
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import AdminAppBar from "../organisms/AdminAppBar";
 import AdminDrawer from "../organisms/AdminDrawer";
-import Footer from "../organisms/Footer";
+import AdminFooter from "../organisms/AdminFooter";
 
 type AdminLayoutProps = {
   children: ReactNode;
@@ -22,8 +21,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-
       <AdminAppBar drawerWidth={drawerWidth} open={open} onToggleDrawer={toggleDrawer} />
 
       <AdminDrawer open={open} drawerWidth={drawerWidth} onToggleDrawer={toggleDrawer} />
@@ -38,7 +35,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         <Toolbar />
         <Box sx={{ p: 3, minHeight: "calc(100vh - 112px)" }}>{children}</Box>
-        <Footer />
+        <AdminFooter />
       </Box>
     </Box>
   );

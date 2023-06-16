@@ -1,5 +1,5 @@
 import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import SearchBar from "../molecules/SearchBar";
 import { useRouter } from "next/router";
@@ -18,6 +18,7 @@ const ContentWrapper = styled("div")({
 
 const Banner = () => {
   const router = useRouter();
+  const theme = useTheme();
 
   const handleSearch = (searchText: string, category: string) => {
     router.push({ pathname: "/shop", query: { search: searchText, category } });
@@ -36,10 +37,7 @@ const Banner = () => {
             align="center"
             gutterBottom
           >
-            Welcome to
-          </Typography>
-          <Typography variant="h3" pl={1} fontWeight="bold" color="error">
-            Craftify.lk
+            Welcome to <span style={{ color: theme.palette.error.main }}>Craftify.lk</span>
           </Typography>
         </div>
 

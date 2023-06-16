@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import SpinnerIcon from "../atoms/SpinnerIcon";
+import { showSnackbar } from "@/store/slices/ui-slice";
+import useAppDispatch from "@/hooks/useAppDispatch";
 
 type ChangePasswordFormProps = {
   onSuccess?: () => void;
@@ -32,19 +34,23 @@ const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
   });
 
   const auth = useAuth();
+  const dispatch = useAppDispatch();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submitForm = async (values: ChangePassword) => {
     try {
       setIsSubmitting(true);
-      await auth.changePassword(values);
+      const response = await auth.changePassword(values);
       reset(); // Reset form
 
       if (onSuccess) {
         onSuccess();
       }
-    } catch (error) {
+
+      dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+    } catch (error: any) {
+      dispatch(showSnackbar({ message: error.response?.data?.message, severity: "error" }));
     } finally {
       setIsSubmitting(false);
     }

@@ -29,14 +29,13 @@ apiService.interceptors.response.use(
     const originalConfig = error.config;
 
     if (error.response) {
-      // Check whether access token expired or not
-      if (error.response.status === 401 && !originalConfig._retry) {
+      const token = getCookie(StorageKeys.REFRESH_TOKEN);
+
+      if (error.response.status === 401 && token && !originalConfig._retry) {
         originalConfig._retry = true;
 
         // Refresh tokens when access token is expired using refresh token
         try {
-          const token = getCookie(StorageKeys.REFRESH_TOKEN);
-
           const response = await axios.get(`${baseURL}/v1/auth/refresh`, {
             headers: { Authorization: `Bearer ${token}` },
           });

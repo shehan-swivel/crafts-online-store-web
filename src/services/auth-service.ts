@@ -45,5 +45,6 @@ function changePassword(data: ChangePassword) {
  */
 function logout() {
   removeCookie(StorageKeys.ACCESS_TOKEN);
+  removeCookie(StorageKeys.REFRESH_TOKEN);
   return true;
 }

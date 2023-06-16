@@ -3,6 +3,7 @@ import { productService } from "@/services";
 import { Product, ProductQuery } from "@/types";
 import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
+import { showSnackbar } from "./ui-slice";
 
 type ProductSlice = {
   all: { data: Product[]; loading: boolean };
@@ -31,13 +32,13 @@ export const getProducts = createAsyncThunk("products/getProducts", async (query
   return response.data;
 });
 
-export const addProduct = createAsyncThunk("products/addProduct", async (data: FormData, thunkAPI) => {
+export const addProduct = createAsyncThunk("products/addProduct", async (data: FormData, { dispatch }) => {
   try {
     const response = await productService.addProduct(data);
-    // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+    dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
     return response.data;
   } catch (error: any) {
-    // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+    dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
     throw error;
   }
 });
@@ -49,28 +50,31 @@ export const getProductById = createAsyncThunk("products/getProductById", async 
 
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
-  async ({ id, data }: { id: string; data: FormData }, thunkAPI) => {
+  async ({ id, data }: { id: string; data: FormData }, { dispatch }) => {
     try {
       const response = await productService.updateProduct(id, data);
-      // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+      dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
       return response.data;
     } catch (error: any) {
-      // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+      dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
       throw error;
     }
   }
 );
 
-export const deleteProduct = createAsyncThunk("products/deleteProduct", async (id: string, thunkAPI) => {
-  try {
-    const response = await productService.deleteProduct(id);
-    // thunkAPI.dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
-    return id;
-  } catch (error: any) {
-    // thunkAPI.dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
-    throw error;
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (id: string, { dispatch }) => {
+    try {
+      const response = await productService.deleteProduct(id);
+      dispatch(showSnackbar({ message: response.data.message, severity: "success" }));
+      return id;
+    } catch (error: any) {
+      dispatch(showSnackbar({ message: error.response.data.message, severity: "error" }));
+      throw error;
+    }
   }
-});
+);
 
 const productSlice = createSlice({
   name: "products",

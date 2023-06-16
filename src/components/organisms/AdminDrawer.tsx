@@ -11,7 +11,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -67,7 +67,7 @@ const Drawer = styled(MuiDrawer, {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      width: theme.spacing(7),
+      width: 0,
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing(7),
       },
@@ -77,6 +77,7 @@ const Drawer = styled(MuiDrawer, {
 
 const AdminDrawer = ({ open, drawerWidth, onToggleDrawer }: AdminDrawerProps) => {
   const router = useRouter();
+  const theme = useTheme();
 
   return (
     <Drawer variant="permanent" className="shadow" open={open} drawerWidth={drawerWidth}>
@@ -100,6 +101,7 @@ const AdminDrawer = ({ open, drawerWidth, onToggleDrawer }: AdminDrawerProps) =>
             key={menu.label}
             href={menu.to}
             selected={router.pathname === menu.to}
+            sx={{ "&.Mui-selected": { color: theme.palette.primary.main } }}
           >
             <ListItemIcon>{menu.icon}</ListItemIcon>
             <ListItemText primary={menu.label} />
