@@ -54,7 +54,7 @@ const headerCells: TableHeaderCell[] = [
 const CartTable = ({ data }: CartTableProps) => {
   return (
     <TableContainer className="shadow" component={Paper}>
-      <Table sx={{ minHeight: 200 }} aria-label="cart items table">
+      <Table aria-label="cart items table">
         <TableHead>
           <TableRow>
             {headerCells.map((cell) => (

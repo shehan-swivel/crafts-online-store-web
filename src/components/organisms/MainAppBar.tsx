@@ -1,5 +1,7 @@
+import useAuth from "@/hooks/useAuth";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Link from "@mui/material/Link";
 import Toolbar from "@mui/material/Toolbar";
@@ -26,12 +28,9 @@ const menuItems = [
 const MainAppBar = ({}: MainAppBarProps) => {
   const router = useRouter();
   const theme = useTheme();
+  const auth = useAuth();
 
   const isMobileScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const search = (value: string) => {
-    console.log(value);
-  };
 
   return (
     <AppBar position="sticky" color="inherit" className="shadow">
@@ -62,6 +61,18 @@ const MainAppBar = ({}: MainAppBarProps) => {
           ))}
         </Box>
 
+        {auth.isAuthenticated && (
+          <Button
+            variant="contained"
+            color="secondary"
+            LinkComponent={NextLink}
+            href="/dashboard"
+            disableElevation
+            sx={{ mr: 2 }}
+          >
+            Dashboard
+          </Button>
+        )}
         <CartButton />
       </Toolbar>
     </AppBar>
