@@ -21,6 +21,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { useMemo, useState } from "react";
@@ -87,32 +88,60 @@ const headerCells: TableHeaderCell[] = [
 const OrdersTable = () => {
   const orders = useAppSelector((state) => state.orders.all.data);
 
-  return (
-    <TableContainer className="shadow" component={Paper}>
-      <Table aria-label="orders table">
-        <TableHead>
-          <TableRow>
-            {headerCells.map((cell) => (
-              <TableCell key={cell.id} align={cell.align}>
-                {cell.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-        <TableBody>
-          {orders.length ? (
-            orders.map((order) => <Row key={order._id} row={order} />)
-          ) : (
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const visibleRows = useMemo(
+    () => orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [page, orders, rowsPerPage]
+  );
+
+  return (
+    <Paper className="shadow">
+      <TableContainer>
+        <Table aria-label="orders table">
+          <TableHead>
             <TableRow>
-              <TableCell colSpan={12}>
-                <EmptyResult />
-              </TableCell>
+              {headerCells.map((cell) => (
+                <TableCell key={cell.id} align={cell.align}>
+                  {cell.label}
+                </TableCell>
+              ))}
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+
+          <TableBody>
+            {visibleRows.length ? (
+              visibleRows.map((order) => <Row key={order._id} row={order} />)
+            ) : (
+              <TableRow>
+                <TableCell colSpan={12}>
+                  <EmptyResult />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        component="div"
+        rowsPerPageOptions={[5, 10, 25]}
+        count={orders.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 };
 

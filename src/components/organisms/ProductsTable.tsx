@@ -2,16 +2,18 @@ import { DEFAULT_IMAGE } from "@/constants";
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
-import { deleteProduct } from "@/store/slices/product-slice";
+import { deleteProduct, getProducts } from "@/store/slices/product-slice";
 import { Product, TableHeaderCell } from "@/types";
 import { formatPrice } from "@/utils/common-utiils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownTwoTone";
 import KeyboardArrowUpTwoToneIcon from "@mui/icons-material/KeyboardArrowUpTwoTone";
+import { Toolbar } from "@mui/material";
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -19,11 +21,14 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import debounce from "lodash.debounce";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import EmptyResult from "../molecules/EmptyResult";
+import SearchField from "../molecules/SearchField";
 
 type ProductsTableProps = {
   onEdit: (row: Product) => void;
@@ -67,34 +72,85 @@ const headerCells: TableHeaderCell[] = [
 ];
 
 const ProductsTable = ({ onEdit }: ProductsTableProps) => {
+  const dispatch = useAppDispatch();
+
   const products = useAppSelector((state) => state.products.all.data);
 
-  return (
-    <TableContainer className="shadow" component={Paper}>
-      <Table aria-label="products table">
-        <TableHead>
-          <TableRow>
-            {headerCells.map((cell) => (
-              <TableCell key={cell.id} align={cell.align}>
-                {cell.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-        <TableBody>
-          {products.length ? (
-            products.map((product) => <Row key={product._id} row={product} onEdit={onEdit} />)
-          ) : (
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSearch = (value: string) => {
+    dispatch(getProducts({ name: value }));
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedHandleSearch = useMemo(() => debounce(handleSearch, 300), []);
+
+  const visibleRows = useMemo(
+    () => products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [page, products, rowsPerPage]
+  );
+
+  useEffect(() => {
+    return () => {
+      debouncedHandleSearch.cancel();
+    };
+  });
+
+  return (
+    <Paper className="shadow">
+      <Toolbar>
+        <SearchField
+          onChangeValue={debouncedHandleSearch}
+          size="small"
+          placeholder="Search by product name"
+        />
+      </Toolbar>
+      <Divider />
+      <TableContainer>
+        <Table aria-label="products table">
+          <TableHead>
             <TableRow>
-              <TableCell colSpan={12}>
-                <EmptyResult />
-              </TableCell>
+              {headerCells.map((cell) => (
+                <TableCell key={cell.id} align={cell.align}>
+                  {cell.label}
+                </TableCell>
+              ))}
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+
+          <TableBody>
+            {visibleRows.length ? (
+              visibleRows.map((product) => <Row key={product._id} row={product} onEdit={onEdit} />)
+            ) : (
+              <TableRow>
+                <TableCell colSpan={12}>
+                  <EmptyResult />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        component="div"
+        rowsPerPageOptions={[5, 10, 25]}
+        count={products.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
   );
 };
 

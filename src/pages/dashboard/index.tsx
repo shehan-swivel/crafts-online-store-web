@@ -5,7 +5,6 @@ import TopSellingProducts from "@/components/organisms/TopSellingProducts";
 import AdminLayout from "@/components/templates/AdminLayout";
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
-import useAuth from "@/hooks/useAuth";
 import { getAnalytics } from "@/store/slices/stat-slice";
 import AccountBalanceTwoToneIcon from "@mui/icons-material/AccountBalanceTwoTone";
 import Inventory2TwoToneIcon from "@mui/icons-material/Inventory2TwoTone";
@@ -16,7 +15,6 @@ import { useEffect, type ReactNode } from "react";
 
 const Dashboard = () => {
   const theme = useTheme();
-  const auth = useAuth();
   const dispatch = useAppDispatch();
 
   const { data, loading } = useAppSelector((state) => state.stats.analytics);
