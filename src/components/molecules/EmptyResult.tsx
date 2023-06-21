@@ -1,5 +1,6 @@
 import SearchOffTwoToneIcon from "@mui/icons-material/SearchOffTwoTone";
-import { Box, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { Variant } from "@mui/material/styles/createTypography";
 import { ReactNode } from "react";
 

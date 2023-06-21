@@ -1,7 +1,8 @@
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import { hideSnackbar } from "@/store/slices/ui-slice";
-import { Alert, Snackbar as MSnackbar } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import MSnackbar from "@mui/material/Snackbar";
 
 const Snackbar = () => {
   const dispatch = useAppDispatch();

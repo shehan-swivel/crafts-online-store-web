@@ -76,7 +76,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async (c
   const cart: Cart = cartCookie ? JSON.parse(cartCookie) : null;
 
   // Redirect to shop if trying to access checkout page without a cart
-  if (!cart || !cart.items.length) {
+  if (!cart?.items?.length) {
     return {
       redirect: {
         destination: "/shop",

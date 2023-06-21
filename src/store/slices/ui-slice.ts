@@ -1,4 +1,4 @@
-import type { AlertColor } from "@mui/material";
+import type { AlertColor } from "@mui/material/Alert";
 import { createSlice } from "@reduxjs/toolkit";
 
 type UiSlice = {
