@@ -1,9 +1,9 @@
 import { OrderChartItem } from "@/types";
-import { useTheme } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type OrdersChartProps = {

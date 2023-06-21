@@ -1,4 +1,3 @@
-import Logo from "@/components/atoms/Logo";
 import EmptyResult from "@/components/molecules/EmptyResult";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";

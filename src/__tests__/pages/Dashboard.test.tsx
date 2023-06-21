@@ -1,7 +1,7 @@
 import Dashboard from "@/pages/dashboard";
 import { statService } from "@/services";
 import { renderWithProviders } from "@/utils/test-utils";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import "@testing-library/jest-dom";
 import { screen, waitFor } from "@testing-library/react";
 

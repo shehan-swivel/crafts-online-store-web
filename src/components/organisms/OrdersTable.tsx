@@ -3,7 +3,7 @@ import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
 import { deleteOrder, updateOrderStatus } from "@/store/slices/order-slice";
-import { Address, Order, OrderItem, TableHeaderCell } from "@/types";
+import { Address, Order, OrderItem, Product, TableHeaderCell } from "@/types";
 import { capitalizeText, formatPrice } from "@/utils/common-utils";
 import { formatDate } from "@/utils/date-time-utils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
@@ -184,17 +184,17 @@ const Row = ({ row }: RowProps) => {
   };
 
   const statusColor = useMemo(() => {
-    const colorMap = {
-      [OrderStatus.PENDING]: "primary",
-      [OrderStatus.PROCESSING]: "warning",
-      [OrderStatus.COMPLETED]: "success",
-      [OrderStatus.CANCELLED]: "error",
-    };
-
-    if (row.status) {
-      return colorMap[row.status];
-    } else {
-      return "default";
+    switch (row.status) {
+      case OrderStatus.PENDING:
+        return "primary";
+      case OrderStatus.PROCESSING:
+        return "warning";
+      case OrderStatus.COMPLETED:
+        return "success";
+      case OrderStatus.CANCELLED:
+        return "error";
+      default:
+        return "default";
     }
   }, [row]);
 
@@ -314,11 +314,13 @@ const OrderItems = ({ items }: OrderItemProps) => (
       </TableHead>
       <TableBody>
         {items.map((orderItem) => (
-          <TableRow key={orderItem.product._id!}>
-            <TableCell>{orderItem.product.name}</TableCell>
+          <TableRow key={(orderItem.product as Product)._id}>
+            <TableCell>{(orderItem.product as Product).name}</TableCell>
             <TableCell align="right">{orderItem.qty}</TableCell>
-            <TableCell align="right">{formatPrice(orderItem.product.price)}</TableCell>
-            <TableCell align="right">{formatPrice(orderItem.product.price * orderItem.qty)}</TableCell>
+            <TableCell align="right">{formatPrice((orderItem.product as Product).price)}</TableCell>
+            <TableCell align="right">
+              {formatPrice((orderItem.product as Product).price * orderItem.qty)}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

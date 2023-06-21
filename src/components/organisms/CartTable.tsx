@@ -1,5 +1,4 @@
 import useAppDispatch from "@/hooks/useAppDispatch";
-import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
 import { removeFromCart, updateCart } from "@/store/slices/cart-slice";
 import { Product, TableHeaderCell } from "@/types";

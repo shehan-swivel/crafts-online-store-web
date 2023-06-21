@@ -10,7 +10,8 @@ import AccountBalanceTwoToneIcon from "@mui/icons-material/AccountBalanceTwoTone
 import Inventory2TwoToneIcon from "@mui/icons-material/Inventory2TwoTone";
 import ShoppingBagTwoToneIcon from "@mui/icons-material/ShoppingBagTwoTone";
 import ShoppingCartCheckoutTwoToneIcon from "@mui/icons-material/ShoppingCartCheckoutTwoTone";
-import { Grid, useTheme } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { useTheme } from "@mui/material/styles";
 import { useEffect, type ReactNode } from "react";
 
 const Dashboard = () => {

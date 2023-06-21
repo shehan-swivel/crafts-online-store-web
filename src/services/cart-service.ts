@@ -33,7 +33,7 @@ function addToCart(newItem: Product): Cart {
   // Find if item already exists in the cart
   const cartItem = cart.items.find((item) => item._id === newItem._id);
 
-  if (cartItem && cartItem._id) {
+  if (cartItem?._id) {
     cart = updateCart(cartItem._id, cartItem.qty + 1);
   } else {
     newItem = { ...newItem, qty: 1 };

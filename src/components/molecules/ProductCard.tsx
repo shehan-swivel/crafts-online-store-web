@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
+import { useMemo } from "react";
 import RoundedButton from "../atoms/RoundedButton";
 
 type ProductCardProps = {
@@ -15,10 +16,18 @@ type ProductCardProps = {
 };
 
 const ProductCard = ({ name, description, price, image, onAdd }: ProductCardProps) => {
+  const imageSrc = useMemo(() => {
+    if (image) {
+      return image;
+    } else {
+      return DEFAULT_IMAGE;
+    }
+  }, [image]);
+
   return (
     <div data-testid="product-card">
       <Card elevation={0}>
-        <CardMedia sx={{ height: 140 }} image={image || DEFAULT_IMAGE} />
+        <CardMedia sx={{ height: 140 }} image={imageSrc} />
       </Card>
 
       <Box display="flex" justifyContent="space-between" mt={2}>

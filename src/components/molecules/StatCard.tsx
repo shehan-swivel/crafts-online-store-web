@@ -1,7 +1,7 @@
 import HistoryIcon from "@mui/icons-material/History";
-import { Icon } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import Icon from "@mui/material/Icon";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
