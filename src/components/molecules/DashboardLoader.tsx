@@ -12,7 +12,7 @@ const LoaderWrapper = styled(Box)({
 
 const DashboardLoader = () => {
   return (
-    <LoaderWrapper>
+    <LoaderWrapper data-testid="dashboard-loader">
       <CircularProgress size={60} color="info" />
     </LoaderWrapper>
   );

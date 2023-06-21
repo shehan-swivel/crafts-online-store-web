@@ -67,7 +67,7 @@ const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) =>
         <IconButton
           edge="start"
           color="inherit"
-          aria-label="open drawer"
+          aria-label="toggle drawer"
           onClick={onToggleDrawer}
           sx={{
             mr: 2,
@@ -90,7 +90,7 @@ const AdminAppBar = ({ open, drawerWidth, onToggleDrawer }: AdminAppBarProps) =>
           </Typography>
         </Box>
 
-        <IconButton color="inherit" onClick={logout}>
+        <IconButton aria-label="logout" color="inherit" onClick={logout}>
           <LogoutTwoToneIcon />
         </IconButton>
       </Toolbar>

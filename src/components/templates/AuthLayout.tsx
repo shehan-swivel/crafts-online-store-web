@@ -1,4 +1,3 @@
-import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -8,7 +7,7 @@ type AuthLayoutProps = {
   children: ReactNode;
 };
 
-const Main = styled("div")(({ theme }) => ({
+const Main = styled("main")(({ theme }) => ({
   backgroundColor: theme.palette.common.white,
   display: "flex",
   flexDirection: "column",

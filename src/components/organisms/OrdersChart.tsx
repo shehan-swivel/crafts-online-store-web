@@ -1,34 +1,24 @@
-import React, { PureComponent } from "react";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import { OrderChartItem } from "@/types";
 import { useTheme } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type OrdersChartProps = {
+  title: string;
   data: OrderChartItem[];
 };
 
-const OrdersChart = ({ data }: OrdersChartProps) => {
+const OrdersChart = ({ title, data }: OrdersChartProps) => {
   const theme = useTheme();
 
   return (
     <Card className="shadow" sx={{ height: "360px" }}>
       <CardContent>
         <Typography variant="subtitle1" fontWeight="bold">
-          Recent Orders
+          {title}
         </Typography>
       </CardContent>
       <Divider />

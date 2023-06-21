@@ -56,6 +56,7 @@ const SearchBar = ({ search, category, onSearch }: SearchBarProps) => {
         sx={{ textTransform: "capitalize" }}
         renderValue={(value) => (value !== "" ? value.toLowerCase() : "Category")}
         onChange={(e) => setCategoryValue(e.target.value)}
+        aria-label="category"
       >
         <MenuItem value="">
           <em>All</em>

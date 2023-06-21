@@ -12,8 +12,6 @@ import { useRouter } from "next/router";
 import Logo from "../atoms/Logo";
 import CartButton from "../molecules/CartButton";
 
-type MainAppBarProps = {};
-
 const menuItems = [
   {
     label: "Home",
@@ -25,7 +23,7 @@ const menuItems = [
   },
 ];
 
-const MainAppBar = ({}: MainAppBarProps) => {
+const MainAppBar = () => {
   const router = useRouter();
   const theme = useTheme();
   const auth = useAuth();
@@ -80,7 +78,7 @@ const MainAppBar = ({}: MainAppBarProps) => {
 };
 
 const LogoLink = () => (
-  <NextLink href="/" style={{ textAlign: "center", padding: 12 }}>
+  <NextLink href="/" style={{ textAlign: "center", padding: 12 }} aria-label="logo link">
     <Logo width={180} height={32} />
   </NextLink>
 );

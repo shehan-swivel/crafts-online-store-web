@@ -57,7 +57,7 @@ const ChangePasswordForm = ({ onSuccess }: ChangePasswordFormProps) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(submitForm)}>
+    <Box component="form" onSubmit={handleSubmit(submitForm)} aria-label="change password form">
       <Grid container>
         <Grid item xs={12}>
           <Controller

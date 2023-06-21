@@ -3,7 +3,7 @@ import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import { addProduct, updateProduct } from "@/store/slices/product-slice";
 import { Product } from "@/types";
-import { convertFileToBase64 } from "@/utils/common-utiils";
+import { convertFileToBase64 } from "@/utils/common-utils";
 import { productFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";

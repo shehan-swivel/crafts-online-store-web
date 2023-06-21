@@ -23,6 +23,7 @@ const EmptyResult = ({
       justifyContent="center"
       alignItems="center"
       minHeight="inherit"
+      aria-label="empty result"
     >
       {icon ? icon : <SearchOffTwoToneIcon fontSize="large" color="disabled" />}
       <Typography color="textSecondary" variant={variant} gutterBottom mb={2}>

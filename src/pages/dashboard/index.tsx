@@ -67,7 +67,7 @@ const Dashboard = () => {
 
         <Grid container spacing={3} mt={1}>
           <Grid item xs={12} md={6}>
-            <OrdersChart data={data?.orderCountPerDay} />
+            <OrdersChart title="Recent Orders" data={data?.orderCountPerDay} />
           </Grid>
           <Grid item xs={12} md={6}>
             <TopSellingProducts products={data?.topSellingProducts} />

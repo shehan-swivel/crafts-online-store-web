@@ -1,7 +1,7 @@
-import { ChangePassword, Login } from "@/types";
-import apiService from "./api-service";
 import { StorageKeys } from "@/constants";
+import { ChangePassword, Login } from "@/types";
 import { removeCookie, setCookie } from "@/utils/cookie-utils";
+import apiService from "./api-service";
 
 const PREFIX = "/v1/auth";
 

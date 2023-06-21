@@ -1,4 +1,4 @@
-import { formatPrice } from "@/utils/common-utiils";
+import { formatPrice } from "@/utils/common-utils";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 

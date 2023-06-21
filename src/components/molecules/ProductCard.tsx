@@ -1,5 +1,5 @@
 import { DEFAULT_IMAGE } from "@/constants";
-import { formatPrice } from "@/utils/common-utiils";
+import { formatPrice } from "@/utils/common-utils";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
@@ -16,7 +16,7 @@ type ProductCardProps = {
 
 const ProductCard = ({ name, description, price, image, onAdd }: ProductCardProps) => {
   return (
-    <div>
+    <div data-testid="product-card">
       <Card elevation={0}>
         <CardMedia sx={{ height: 140 }} image={image || DEFAULT_IMAGE} />
       </Card>

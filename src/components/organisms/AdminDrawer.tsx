@@ -89,7 +89,7 @@ const AdminDrawer = ({ open, drawerWidth, onToggleDrawer }: AdminDrawerProps) =>
           px: [1],
         }}
       >
-        <IconButton onClick={onToggleDrawer}>
+        <IconButton aria-label="toggle drawer" onClick={onToggleDrawer}>
           <ChevronLeftTwoToneIcon />
         </IconButton>
       </Toolbar>
@@ -102,6 +102,7 @@ const AdminDrawer = ({ open, drawerWidth, onToggleDrawer }: AdminDrawerProps) =>
             href={menu.to}
             selected={router.pathname === menu.to}
             sx={{ "&.Mui-selected": { color: theme.palette.primary.main } }}
+            role="listitem"
           >
             <ListItemIcon>{menu.icon}</ListItemIcon>
             <ListItemText primary={menu.label} />

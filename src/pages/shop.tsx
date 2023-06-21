@@ -47,7 +47,7 @@ const Shop = ({ search, category }: ShopProps) => {
   return (
     <>
       <TopBar>
-        <SearchBarWrapper>
+        <SearchBarWrapper data-testid="searchbar-wrapper">
           <SearchBar onSearch={handleSearch} search={search} category={category} />
         </SearchBarWrapper>
       </TopBar>

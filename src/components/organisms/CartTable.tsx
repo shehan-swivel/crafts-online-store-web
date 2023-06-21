@@ -3,7 +3,7 @@ import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
 import { removeFromCart, updateCart } from "@/store/slices/cart-slice";
 import { Product, TableHeaderCell } from "@/types";
-import { formatPrice } from "@/utils/common-utiils";
+import { formatPrice } from "@/utils/common-utils";
 import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
@@ -96,11 +96,16 @@ const Row = ({ row }: RowProps) => {
   };
 
   return (
-    <TableRow key={row._id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+    <TableRow
+      key={row._id}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+      aria-label="cart table row"
+    >
       <TableCell>{row.name}</TableCell>
       <TableCell align="right"> {formatPrice(row.price)}</TableCell>
       <TableCell align="right">
         <TextField
+          name="quantity"
           variant="outlined"
           color="primary"
           size="small"
@@ -112,7 +117,7 @@ const Row = ({ row }: RowProps) => {
       </TableCell>
       <TableCell align="right">{formatPrice(row.price * row.qty)}</TableCell>
       <TableCell align="right">
-        <IconButton color="error" aria-label="Remove" onClick={confirmDelete}>
+        <IconButton color="error" aria-label="remove" onClick={confirmDelete}>
           <CloseTwoToneIcon />
         </IconButton>
       </TableCell>

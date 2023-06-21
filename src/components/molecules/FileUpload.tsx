@@ -42,13 +42,7 @@ const FileUpload = ({ icon, label, accept, multiple, imageUrl, onChange }: FileU
 
       <ButtonBase component="span" sx={{ display: "flex" }}>
         {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt="Product image"
-            height={100}
-            width={200}
-            style={{ objectFit: "contain" }}
-          />
+          <Image src={imageUrl} alt="image" height={100} width={200} style={{ objectFit: "contain" }} />
         ) : (
           <UploadButtonContent>
             <span>{icon}</span>

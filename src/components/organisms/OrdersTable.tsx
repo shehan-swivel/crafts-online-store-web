@@ -4,7 +4,7 @@ import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
 import { deleteOrder, updateOrderStatus } from "@/store/slices/order-slice";
 import { Address, Order, OrderItem, TableHeaderCell } from "@/types";
-import { capitalizeText, formatPrice } from "@/utils/common-utiils";
+import { capitalizeText, formatPrice } from "@/utils/common-utils";
 import { formatDate } from "@/utils/date-time-utils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownTwoTone";
@@ -202,7 +202,7 @@ const Row = ({ row }: RowProps) => {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} aria-label="orders table row">
         <TableCell>{formatDate(row.createdAt!)}</TableCell>
         <TableCell align="right">
           <Typography variant="body2" fontWeight="bold" color="error">

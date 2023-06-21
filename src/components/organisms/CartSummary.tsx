@@ -12,7 +12,7 @@ const CartSummary = () => {
   const shippingCost = useAppSelector((state) => state.cart.shippingCost);
 
   return (
-    <Paper className="shadow" sx={{ p: 3 }}>
+    <Paper className="shadow" sx={{ p: 3 }} aria-label="cart summary">
       <Typography variant="h6" fontWeight="bold" gutterBottom mb={3}>
         Summary
       </Typography>

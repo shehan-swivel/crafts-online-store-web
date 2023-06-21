@@ -25,7 +25,7 @@ const Banner = () => {
   };
 
   return (
-    <div style={{ width: "100%", height: 440, position: "relative" }}>
+    <div style={{ width: "100%", height: 440, position: "relative" }} data-testid="banner">
       <Image src="/image.jpg" alt="banner" fill style={{ objectFit: "cover" }} />
 
       <ContentWrapper>

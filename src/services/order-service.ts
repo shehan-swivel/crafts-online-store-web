@@ -1,6 +1,6 @@
+import { OrderStatus } from "@/constants";
 import { Order } from "@/types";
 import apiService from "./api-service";
-import { OrderStatus } from "@/constants";
 
 const PREFIX = "/v1/orders";
 

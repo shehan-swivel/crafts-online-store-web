@@ -4,7 +4,7 @@ import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
 import { deleteProduct, getProducts } from "@/store/slices/product-slice";
 import { Product, TableHeaderCell } from "@/types";
-import { formatPrice } from "@/utils/common-utiils";
+import { formatPrice } from "@/utils/common-utils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import KeyboardArrowDownTwoToneIcon from "@mui/icons-material/KeyboardArrowDownTwoTone";
@@ -171,7 +171,7 @@ const Row = ({ row, onEdit }: RowProps) => {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} aria-label="products table row">
         <TableCell>
           <Box display="flex" alignItems="center">
             <Image
@@ -203,7 +203,7 @@ const Row = ({ row, onEdit }: RowProps) => {
         </TableCell>
         <TableCell align="center">
           <IconButton
-            aria-label="expand row"
+            aria-label="expand description"
             size="small"
             onClick={() => setShowDescription(!showDescription)}
           >

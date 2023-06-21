@@ -1,4 +1,4 @@
-import { Product, ProductQuery } from "@/types";
+import { ProductQuery } from "@/types";
 import apiService from "./api-service";
 
 const PREFIX = "/v1/products";

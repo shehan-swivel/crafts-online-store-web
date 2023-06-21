@@ -71,7 +71,12 @@ const CheckoutForm = () => {
   };
 
   return (
-    <Box component="form" id="billing-form" onSubmit={handleSubmit(onSubmitForm)}>
+    <Box
+      component="form"
+      id="checkout-form"
+      data-testid="checkout-form"
+      onSubmit={handleSubmit(onSubmitForm)}
+    >
       <Grid container columnSpacing={4} rowSpacing={1}>
         <Grid item xs={12}>
           <Controller

@@ -33,6 +33,7 @@ const StatCard = ({ label, value, icon, color, subtitle }: StatCardProps) => {
           className="shadow"
           sx={{ background: color, width: 64, height: 64, mr: 2 }}
           variant="rounded"
+          aria-label="statistic icon"
         >
           <Icon fontSize="large" component={icon} />
         </Avatar>

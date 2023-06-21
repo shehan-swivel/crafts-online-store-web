@@ -1,7 +1,7 @@
 import RoundedButton from "@/components/atoms/RoundedButton";
 import SpinnerIcon from "@/components/atoms/SpinnerIcon";
 import SummaryRow from "@/components/molecules/SummaryRow";
-import BillingForm from "@/components/organisms/BillingForm";
+import CheckoutForm from "@/components/organisms/CheckoutForm";
 import MainLayout from "@/components/templates/MainLayout";
 import useAppSelector from "@/hooks/useAppSelector";
 import { cartTotalPriceSelector } from "@/store/slices/cart-slice";
@@ -27,7 +27,7 @@ const Checkout = () => {
           <Typography variant="h5" mb={3} fontWeight="bold">
             Billing details
           </Typography>
-          <BillingForm />
+          <CheckoutForm />
         </Grid>
 
         <Grid item xs={12} lg={4}>
@@ -55,7 +55,7 @@ const Checkout = () => {
               fullWidth
               sx={{ mt: 3 }}
               size="large"
-              form="billing-form"
+              form="checkout-form"
               disabled={submitState.loading}
             >
               {submitState.loading ? <SpinnerIcon /> : "Place Order"}
