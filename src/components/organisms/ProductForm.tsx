@@ -70,9 +70,7 @@ const ProductForm = ({ isEdit, defaultValues, onClose }: ProductFormProps) => {
       await dispatch(addProduct(fd));
     }
 
-    if (submitState.success) {
-      onClose();
-    }
+    onClose();
   };
 
   useEffect(() => {
@@ -154,11 +152,12 @@ const ProductForm = ({ isEdit, defaultValues, onClose }: ProductFormProps) => {
                   {...field}
                   labelId="category-label"
                   label="Category"
+                  sx={{ textTransform: "capitalize" }}
                   error={!!errors.category?.message}
                 >
                   {Object.entries(ProductCategory).map(([value, label]) => (
-                    <MenuItem key={value} value={value}>
-                      {label}
+                    <MenuItem key={value} value={value} sx={{ textTransform: "capitalize" }}>
+                      {label?.toLowerCase()}
                     </MenuItem>
                   ))}
                 </Select>

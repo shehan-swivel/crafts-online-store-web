@@ -109,7 +109,7 @@ const productSlice = createSlice({
       state.submit.success = false;
     });
     builder.addCase(addProduct.fulfilled, (state, { payload }) => {
-      state.all.data.push(payload.data);
+      state.all.data.unshift(payload.data);
       state.submit.loading = false;
       state.submit.success = true;
     });
