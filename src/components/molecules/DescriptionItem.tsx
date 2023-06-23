@@ -16,7 +16,7 @@ const DescriptionItem = ({ label, value }: DescriptionItemProps) => {
       </Grid>
       <Grid item>
         <Typography gutterBottom variant="body2">
-          {value}
+          {value ? value : "-"}
         </Typography>
       </Grid>
     </Grid>

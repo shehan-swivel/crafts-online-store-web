@@ -220,7 +220,7 @@ const Row = ({ row }: RowProps) => {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} aria-label="orders table row">
+      <TableRow sx={{ "& > td": { borderBottom: "unset" } }} aria-label="orders table row">
         <TableCell>{row.orderNumber}</TableCell>
         <TableCell>{formatDate(row.createdAt!)}</TableCell>
         <TableCell align="right">
@@ -232,12 +232,14 @@ const Row = ({ row }: RowProps) => {
           <Chip
             label={row.status?.toLowerCase()}
             color={statusColor}
+            variant="outlined"
             component={Typography}
             textTransform="capitalize"
             aria-haspopup="listbox"
             aria-controls="order-status-menu"
             aria-label="order status"
             aria-expanded={open ? "true" : undefined}
+            sx={{ fontWeight: "bold" }}
             onClick={handleClickStatus}
           />
           <Menu

@@ -155,7 +155,7 @@ const Row = ({ row, onEdit }: RowProps) => {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} aria-label="products table row">
+      <TableRow sx={{ "& > td": { borderBottom: "unset" } }} aria-label="products table row">
         <TableCell>
           <Box display="flex" alignItems="center">
             <Image
@@ -173,7 +173,9 @@ const Row = ({ row, onEdit }: RowProps) => {
           </Box>
         </TableCell>
         <TableCell align="right">
-          <Chip label={row.qty} color="secondary" />
+          <Typography variant="body2" fontWeight="bold">
+            {row.qty}
+          </Typography>
         </TableCell>
         <TableCell align="right">
           <Typography variant="body2" color="error">
@@ -181,9 +183,12 @@ const Row = ({ row, onEdit }: RowProps) => {
           </Typography>
         </TableCell>
         <TableCell align="center">
-          <Typography variant="body2" color="primary">
-            {row.category}
-          </Typography>
+          <Chip
+            label={row?.category?.toLowerCase()}
+            variant="outlined"
+            color="warning"
+            sx={{ textTransform: "capitalize", fontWeight: "bold" }}
+          />
         </TableCell>
         <TableCell align="center">
           <IconButton
