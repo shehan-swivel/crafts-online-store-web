@@ -11,9 +11,6 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
-import { wrapper } from "@/store";
-import { StorageKeys } from "@/constants";
-import { Cart } from "@/types/cart-types";
 
 const Checkout = () => {
   const total = useAppSelector(cartTotalPriceSelector);
@@ -70,24 +67,5 @@ const Checkout = () => {
 Checkout.getLayout = function getLayout(page: ReactNode) {
   return <MainLayout>{page}</MainLayout>;
 };
-
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  const cartCookie = context.req.cookies[StorageKeys.CART];
-  const cart: Cart = cartCookie ? JSON.parse(cartCookie) : null;
-
-  // Redirect to shop if trying to access checkout page without a cart
-  if (!cart?.items?.length) {
-    return {
-      redirect: {
-        destination: "/shop",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
-});
 
 export default Checkout;

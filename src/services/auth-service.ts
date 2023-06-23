@@ -20,8 +20,8 @@ async function login(data: Login) {
   const response = await apiService.post(`${PREFIX}/login`, data);
   const { accessToken, refreshToken } = response.data.data;
   // Save tokens as cookies
-  setCookie(StorageKeys.ACCESS_TOKEN, accessToken);
-  setCookie(StorageKeys.REFRESH_TOKEN, refreshToken);
+  setCookie(StorageKeys.ACCESS_TOKEN, accessToken, { expires: 7 });
+  setCookie(StorageKeys.REFRESH_TOKEN, refreshToken, { expires: 7 });
   return response;
 }
 
