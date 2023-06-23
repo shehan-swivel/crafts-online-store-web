@@ -22,7 +22,12 @@ const initialState = {
       ],
       loading: false,
     },
-    query: {},
+    query: {
+      orderNumber: "",
+      status: "",
+      orderBy: "",
+      order: "",
+    },
     submit: {
       loading: false,
       success: false,

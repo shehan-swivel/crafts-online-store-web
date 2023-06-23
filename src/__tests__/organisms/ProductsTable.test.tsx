@@ -22,7 +22,9 @@ const initialState = {
     },
     query: {
       name: "",
-      category: null,
+      category: "",
+      orderBy: "",
+      order: "",
     },
     submit: {
       loading: false,

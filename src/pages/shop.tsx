@@ -1,6 +1,5 @@
-import EmptyResult from "@/components/molecules/EmptyResult";
-import ProductCard from "@/components/molecules/ProductCard";
 import SearchBar from "@/components/molecules/SearchBar";
+import ProductsGrid from "@/components/organisms/ProductsGrid";
 import MainLayout from "@/components/templates/MainLayout";
 import { ProductCategory } from "@/constants";
 import useAppDispatch from "@/hooks/useAppDispatch";
@@ -10,7 +9,6 @@ import { addToCart } from "@/store/slices/cart-slice";
 import { getProducts } from "@/store/slices/product-slice";
 import { Product, ProductQuery } from "@/types";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { ReactNode } from "react";
 
@@ -54,23 +52,7 @@ const Shop = ({ search, category }: ShopProps) => {
       </TopBar>
 
       <Container sx={{ pt: 10, pb: 8 }}>
-        {products?.length ? (
-          <Grid container spacing={4} rowGap={1}>
-            {products.map((product) => (
-              <Grid item key={product._id} xs={12} sm={6} md={4}>
-                <ProductCard
-                  name={product.name}
-                  description={product.description}
-                  price={product.price}
-                  image={product.image as string}
-                  onAdd={() => handleAdd(product)}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        ) : (
-          <EmptyResult message="No items found" />
-        )}
+        <ProductsGrid products={products} onAdd={handleAdd} />
       </Container>
     </>
   );
