@@ -10,6 +10,7 @@ import { getProducts } from "@/store/slices/product-slice";
 import { Product, ProductQuery } from "@/types";
 import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
+import Head from "next/head";
 import { ReactNode } from "react";
 
 type ShopProps = {
@@ -45,6 +46,10 @@ const Shop = ({ search, category }: ShopProps) => {
 
   return (
     <>
+      <Head>
+        <title>Craftify | Shop</title>
+      </Head>
+
       <TopBar>
         <SearchBarWrapper data-testid="searchbar-wrapper">
           <SearchBar onSearch={handleSearch} search={search} category={category} />

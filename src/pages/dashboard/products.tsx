@@ -10,6 +10,7 @@ import { getProducts } from "@/store/slices/product-slice";
 import { Product } from "@/types";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
 import Button from "@mui/material/Button";
+import Head from "next/head";
 import { ReactNode, useEffect, useState } from "react";
 
 const initialValues: Product = {
@@ -56,7 +57,11 @@ const Products = () => {
   }, [debouncedQuery]);
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>Craftify | Products</title>
+      </Head>
+
       <AdminHeader
         title="Products"
         extra={
@@ -77,7 +82,7 @@ const Products = () => {
       <AppDialog open={isOpen} title={dialogTitle} onClose={handleCloseDialog}>
         <ProductForm isEdit={isEdit} defaultValues={defaultValues} onClose={handleCloseDialog} />
       </AppDialog>
-    </div>
+    </>
   );
 };
 

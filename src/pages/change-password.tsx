@@ -6,6 +6,7 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
@@ -20,6 +21,10 @@ const ChangePassword = () => {
 
   return (
     <>
+      <Head>
+        <title>Craftify | Change Password</title>
+      </Head>
+
       <Typography variant="h5" gutterBottom mb={3} fontWeight="bold">
         Change Password
       </Typography>
