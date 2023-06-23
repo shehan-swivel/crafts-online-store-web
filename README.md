@@ -1,26 +1,106 @@
+# Craftify Web UI
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Clone the repository
 
-First, run the development server:
+```bash
+$ git clone https://github.com/shehanswivel/crafts-online-store-web
+```
+
+## Installation
+
+```bash
+$ npm install
+# or
+$ yarn install
+```
+
+## Environment variables
+
+Make sure to create .env.local file in the project root with the variables that included in .env.example file.
+
+If you are using a separate development environment other than the local development environment, make sure to create .env.development file in the project root with the variables that included in .env.example file.
+
+To include production specific environment variable, create .env.production file in the project root with the variables that included in .env.example file.
+
+Learn more - https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
+
+```bash
+# REST API base URL
+NEXT_PUBLIC_API_URL=<https://your-rest-api.com>
+```
+
+## Running the app
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Note: 
+The admin login page link is not displayed in the user interface as it is only needed for admins.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+To log in to the admin dashboard, follow these steps:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. Open a web browser.
+2. Enter the following URL: [http://localhost:3000/login](http://localhost:3000/login) 
+3. You will be redirected to the admin login page.
+4. Provide your admin credentials to log in and access the admin dashboard.  
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Test
+
+```bash
+# unit tests
+$ npm test
+```
+
+## Project structure
+
+This project follows the Atomic Design pattern for organizing components.
+
+[Atomic Design Methodology](https://atomicdesign.bradfrost.com/chapter-2) - learn more about the Atomic Design pattern
+
+```bash
+src/              # Source folder
+  __tests__/      # Contains all the app test files  
+    /atoms
+    /molecules
+    /organisms
+    /pages
+    /templates   
+  components/     # Contains all the app components
+    /atoms
+    /molecules
+    /organisms
+    /templates
+  config/         # Contains app configurations
+  constants/      # Contains all the constants
+  contexts/       # Contains all the context providers
+  hooks/          # Contains all the custom hooks
+  pages/          # Contains all the pages
+  services/       # Contains all the service files
+  store/          # Contains redux store and slices
+    /slices       # Contains redux slices
+  styles/         # Contains all the style files
+  types/          # Contains all the custom types
+  utils/          # Contains utility functions
+    /validations
+  middleware.ts   # Nextjs middleware file
+.env.example
+.eslintrc.json
+.gitignore
+jest.config.js
+next.config.js
+next.d.ts
+package-lock.json
+package.json
+README.md
+tsconfig.json
+```
 
 ## Learn More
 
