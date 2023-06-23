@@ -12,6 +12,7 @@ import { Product } from "@/types";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Head from "next/head";
 import { ReactNode } from "react";
 
 export default function Home() {
@@ -25,6 +26,10 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Craftify | Home</title>
+      </Head>
+
       {/* Banner section */}
       <Banner />
 

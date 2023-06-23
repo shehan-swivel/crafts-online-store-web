@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -59,6 +60,10 @@ const LoginPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Craftify | Login</title>
+      </Head>
+
       <Typography variant="h5" gutterBottom mb={3} fontWeight="bold">
         Login
       </Typography>

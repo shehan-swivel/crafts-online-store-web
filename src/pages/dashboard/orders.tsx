@@ -5,6 +5,7 @@ import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useDebounce from "@/hooks/useDebounce";
 import { getOrders } from "@/store/slices/order-slice";
+import Head from "next/head";
 import { ReactNode, useEffect } from "react";
 
 const Orders = () => {
@@ -19,11 +20,15 @@ const Orders = () => {
   }, [debouncedQuery]);
 
   return (
-    <div>
+    <>
+      <Head>
+        <title>Craftify | Orders</title>
+      </Head>
+
       <AdminHeader title="Orders" sx={{ mb: 4 }} />
 
       <OrdersTable />
-    </div>
+    </>
   );
 };
 

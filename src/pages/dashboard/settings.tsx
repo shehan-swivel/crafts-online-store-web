@@ -7,11 +7,16 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import Head from "next/head";
 import { ReactNode } from "react";
 
 const Settings = () => {
   return (
-    <div>
+    <>
+      <Head>
+        <title>Craftify | Settings</title>
+      </Head>
+
       <AdminHeader title="Settings" sx={{ mb: 4 }} />
 
       <Card className="shadow">
@@ -29,7 +34,7 @@ const Settings = () => {
           </Box>
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 };
 
