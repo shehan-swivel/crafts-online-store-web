@@ -1,7 +1,6 @@
 import CategoryCard from "@/components/molecules/CategoryCard";
-import EmptyResult from "@/components/molecules/EmptyResult";
-import ProductCard from "@/components/molecules/ProductCard";
 import Banner from "@/components/organisms/Banner";
+import ProductsGrid from "@/components/organisms/ProductsGrid";
 import MainLayout from "@/components/templates/MainLayout";
 import { CATEGORIES } from "@/constants";
 import useAppDispatch from "@/hooks/useAppDispatch";
@@ -34,23 +33,7 @@ export default function Home() {
         <Typography variant="h4" mb={5} mt={8} fontWeight="bold" align="center">
           Out Latest Collection
         </Typography>
-        {products?.length ? (
-          <Grid container spacing={4} rowGap={1}>
-            {products.map((product) => (
-              <Grid item key={product._id} xs={12} sm={6} md={4}>
-                <ProductCard
-                  name={product.name}
-                  description={product.description}
-                  price={product.price}
-                  image={product.image as string}
-                  onAdd={() => handleAdd(product)}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        ) : (
-          <EmptyResult message="No items found" />
-        )}
+        <ProductsGrid products={products} onAdd={handleAdd} />
 
         {/* Find by Categories section */}
         <Typography variant="h4" mb={5} mt={10} fontWeight="bold" align="center">
