@@ -2,7 +2,7 @@ import { DEFAULT_IMAGE } from "@/constants";
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
-import { deleteProduct, getProducts } from "@/store/slices/product-slice";
+import { deleteProduct, updateProductQuery } from "@/store/slices/product-slice";
 import { Product, TableHeaderCell } from "@/types";
 import { formatPrice } from "@/utils/common-utils";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
@@ -19,16 +19,14 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import debounce from "lodash.debounce";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import EmptyResult from "../molecules/EmptyResult";
-import SearchField from "../molecules/SearchField";
+import EnhancedTableHead from "../molecules/EnhancedTableHead";
+import ProductsTableFilter from "./ProductsTableFilter";
 
 type ProductsTableProps = {
   onEdit: (row: Product) => void;
@@ -63,11 +61,13 @@ const headerCells: TableHeaderCell[] = [
     id: "description",
     label: "Description",
     align: "center",
+    disableSort: true,
   },
   {
     id: "actions",
     label: "Actions",
     align: "right",
+    disableSort: true,
   },
 ];
 
@@ -75,6 +75,7 @@ const ProductsTable = ({ onEdit }: ProductsTableProps) => {
   const dispatch = useAppDispatch();
 
   const products = useAppSelector((state) => state.products.all.data);
+  const query = useAppSelector((state) => state.products.query);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -88,45 +89,28 @@ const ProductsTable = ({ onEdit }: ProductsTableProps) => {
     setPage(0);
   };
 
-  const handleSearch = (value: string) => {
-    dispatch(getProducts({ name: value }));
+  const handleSort = (orderBy: string, order: string) => {
+    const updatedQuery = { ...query, orderBy, order };
+    dispatch(updateProductQuery(updatedQuery));
   };
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedHandleSearch = useMemo(() => debounce(handleSearch, 300), []);
 
   const visibleRows = useMemo(
     () => products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [page, products, rowsPerPage]
   );
 
-  useEffect(() => {
-    return () => {
-      debouncedHandleSearch.cancel();
-    };
-  });
-
   return (
     <Paper className="shadow">
-      <Toolbar>
-        <SearchField
-          onChangeValue={debouncedHandleSearch}
-          size="small"
-          placeholder="Search by product name"
-        />
-      </Toolbar>
+      <ProductsTableFilter />
       <Divider />
       <TableContainer>
         <Table aria-label="products table">
-          <TableHead>
-            <TableRow>
-              {headerCells.map((cell) => (
-                <TableCell key={cell.id} align={cell.align}>
-                  {cell.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <EnhancedTableHead
+            headerCells={headerCells}
+            orderBy={query.orderBy}
+            order={query.order}
+            onSort={handleSort}
+          />
 
           <TableBody>
             {visibleRows.length ? (

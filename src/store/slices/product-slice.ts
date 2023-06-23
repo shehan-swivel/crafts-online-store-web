@@ -1,4 +1,3 @@
-import { ProductCategory } from "@/constants";
 import { productService } from "@/services";
 import { Product, ProductQuery } from "@/types";
 import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -7,7 +6,7 @@ import { showSnackbar } from "./ui-slice";
 
 type ProductSlice = {
   all: { data: Product[]; loading: boolean };
-  query: { name: string; category: ProductCategory | null };
+  query: ProductQuery;
   submit: { loading: boolean; success: boolean };
 };
 
@@ -18,7 +17,9 @@ const initialState: ProductSlice = {
   },
   query: {
     name: "",
-    category: null,
+    category: "",
+    orderBy: "",
+    order: "",
   },
   submit: {
     loading: false,
@@ -79,7 +80,11 @@ export const deleteProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    updateProductQuery(state, action) {
+      state.query = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     // Hydration between server and client side to maintain the updated state
     builder.addCase(HYDRATE, (state, action: AnyAction) => {
@@ -139,6 +144,8 @@ const productSlice = createSlice({
   },
 });
 
-const { reducer } = productSlice;
+const { reducer, actions } = productSlice;
+
+export const { updateProductQuery } = actions;
 
 export default reducer;

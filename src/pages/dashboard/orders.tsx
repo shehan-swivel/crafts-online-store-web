@@ -1,33 +1,30 @@
 import AdminHeader from "@/components/molecules/AdminHeader";
-import DashboardLoader from "@/components/molecules/DashboardLoader";
 import OrdersTable from "@/components/organisms/OrdersTable";
 import AdminLayout from "@/components/templates/AdminLayout";
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
+import useDebounce from "@/hooks/useDebounce";
 import { getOrders } from "@/store/slices/order-slice";
 import { ReactNode, useEffect } from "react";
 
 const Orders = () => {
   const dispatch = useAppDispatch();
 
-  const { loading } = useAppSelector((state) => state.orders.all);
+  const query = useAppSelector((state) => state.orders.query);
+  const debouncedQuery = useDebounce(query, 300);
 
   useEffect(() => {
-    dispatch(getOrders());
+    dispatch(getOrders(debouncedQuery));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [debouncedQuery]);
 
-  if (loading) {
-    return <DashboardLoader />;
-  } else {
-    return (
-      <div>
-        <AdminHeader title="Orders" sx={{ mb: 4 }} />
+  return (
+    <div>
+      <AdminHeader title="Orders" sx={{ mb: 4 }} />
 
-        <OrdersTable />
-      </div>
-    );
-  }
+      <OrdersTable />
+    </div>
+  );
 };
 
 Orders.getLayout = function getLayout(page: ReactNode) {

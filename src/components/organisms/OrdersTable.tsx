@@ -2,7 +2,7 @@ import { OrderStatus } from "@/constants";
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAppSelector from "@/hooks/useAppSelector";
 import useConfirm from "@/hooks/useConfirm";
-import { deleteOrder, updateOrderStatus } from "@/store/slices/order-slice";
+import { deleteOrder, updateOrderQuery, updateOrderStatus } from "@/store/slices/order-slice";
 import { Address, Order, OrderItem, Product, TableHeaderCell } from "@/types";
 import { capitalizeText, formatPrice } from "@/utils/common-utils";
 import { formatDate } from "@/utils/date-time-utils";
@@ -12,6 +12,7 @@ import KeyboardArrowUpTwoToneIcon from "@mui/icons-material/KeyboardArrowUpTwoTo
 import Box from "@mui/material/Box";
 import Chip from "@mui/material/Chip";
 import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -27,6 +28,8 @@ import Typography from "@mui/material/Typography";
 import { useMemo, useState } from "react";
 import DescriptionItem from "../molecules/DescriptionItem";
 import EmptyResult from "../molecules/EmptyResult";
+import EnhancedTableHead from "../molecules/EnhancedTableHead";
+import OrdersTableFilter from "./OrdersTableFilter";
 
 type OrderItemProps = {
   items: OrderItem[];
@@ -50,6 +53,10 @@ type OrderNoteProps = {
 
 const headerCells: TableHeaderCell[] = [
   {
+    id: "orderNumber",
+    label: "Order #",
+  },
+  {
     id: "createdAt",
     label: "Date",
   },
@@ -67,26 +74,33 @@ const headerCells: TableHeaderCell[] = [
     id: "items",
     label: "Items",
     align: "center",
+    disableSort: true,
   },
   {
     id: "customer",
     label: "Customer Details",
     align: "center",
+    disableSort: true,
   },
   {
     id: "note",
     label: "Note",
     align: "center",
+    disableSort: true,
   },
   {
     id: "actions",
     label: "Actions",
     align: "right",
+    disableSort: true,
   },
 ];
 
 const OrdersTable = () => {
+  const dispatch = useAppDispatch();
+
   const orders = useAppSelector((state) => state.orders.all.data);
+  const query = useAppSelector((state) => state.orders.query);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -100,6 +114,11 @@ const OrdersTable = () => {
     setPage(0);
   };
 
+  const handleSort = (orderBy: string, order: string) => {
+    const updatedQuery = { ...query, orderBy, order };
+    dispatch(updateOrderQuery(updatedQuery));
+  };
+
   const visibleRows = useMemo(
     () => orders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     [page, orders, rowsPerPage]
@@ -107,17 +126,16 @@ const OrdersTable = () => {
 
   return (
     <Paper className="shadow">
+      <OrdersTableFilter />
+      <Divider />
       <TableContainer>
         <Table aria-label="orders table">
-          <TableHead>
-            <TableRow>
-              {headerCells.map((cell) => (
-                <TableCell key={cell.id} align={cell.align}>
-                  {cell.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
+          <EnhancedTableHead
+            headerCells={headerCells}
+            orderBy={query.orderBy}
+            order={query.order}
+            onSort={handleSort}
+          />
 
           <TableBody>
             {visibleRows.length ? (
@@ -203,6 +221,7 @@ const Row = ({ row }: RowProps) => {
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }} aria-label="orders table row">
+        <TableCell>{row.orderNumber}</TableCell>
         <TableCell>{formatDate(row.createdAt!)}</TableCell>
         <TableCell align="right">
           <Typography variant="body2" fontWeight="bold" color="error">
