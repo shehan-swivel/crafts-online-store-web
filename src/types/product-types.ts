@@ -12,7 +12,9 @@ export type Product = {
 
 export type ProductQuery = {
   name?: string;
-  category?: ProductCategory | string;
+  category?: string;
+  orderBy?: string;
+  order?: string;
   limit?: number;
 };
 
@@ -20,4 +22,5 @@ export type TableHeaderCell = {
   id: string;
   label: string;
   align?: "inherit" | "left" | "center" | "right" | "justify";
+  disableSort?: boolean;
 };

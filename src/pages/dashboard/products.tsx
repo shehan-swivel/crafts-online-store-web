@@ -4,6 +4,8 @@ import ProductForm from "@/components/organisms/ProductForm";
 import ProductsTable from "@/components/organisms/ProductsTable";
 import AdminLayout from "@/components/templates/AdminLayout";
 import useAppDispatch from "@/hooks/useAppDispatch";
+import useAppSelector from "@/hooks/useAppSelector";
+import useDebounce from "@/hooks/useDebounce";
 import { getProducts } from "@/store/slices/product-slice";
 import { Product } from "@/types";
 import AddTwoToneIcon from "@mui/icons-material/AddTwoTone";
@@ -21,6 +23,9 @@ const initialValues: Product = {
 
 const Products = () => {
   const dispatch = useAppDispatch();
+
+  const query = useAppSelector((state) => state.products.query);
+  const debouncedQuery = useDebounce(query, 300);
 
   const [isOpen, setIsOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState("");
@@ -46,9 +51,9 @@ const Products = () => {
   };
 
   useEffect(() => {
-    dispatch(getProducts({}));
+    dispatch(getProducts(debouncedQuery));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [debouncedQuery]);
 
   return (
     <div>

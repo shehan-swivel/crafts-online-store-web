@@ -15,6 +15,7 @@ export type OrderItem = {
 
 export type Order = {
   _id?: string;
+  orderNumber?: string;
   amount?: number;
   status?: OrderStatus;
   items: OrderItem[];
@@ -31,4 +32,11 @@ export type Order = {
 export type OrderChartItem = {
   date: string;
   count: number;
+};
+
+export type OrderQuery = {
+  orderNumber?: string;
+  status?: string;
+  orderBy?: string;
+  order?: string;
 };

@@ -1,5 +1,5 @@
 import { orderService } from "@/services";
-import { Order } from "@/types";
+import { Order, OrderQuery } from "@/types";
 import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { clearCart } from "./cart-slice";
@@ -8,6 +8,7 @@ import { showSnackbar } from "./ui-slice";
 
 type OrderSlice = {
   all: { data: Order[]; loading: boolean };
+  query: OrderQuery;
   submit: { loading: boolean; success: boolean };
 };
 
@@ -16,6 +17,12 @@ const initialState: OrderSlice = {
     data: [],
     loading: false,
   },
+  query: {
+    orderNumber: "",
+    status: "",
+    orderBy: "",
+    order: "",
+  },
   submit: {
     loading: false,
     success: false,
@@ -23,8 +30,8 @@ const initialState: OrderSlice = {
 };
 
 /* Orders actions */
-export const getOrders = createAsyncThunk("orders/getOrders", async () => {
-  const response = await orderService.getOrders();
+export const getOrders = createAsyncThunk("orders/getOrders", async (queryParams?: OrderQuery) => {
+  const response = await orderService.getOrders(queryParams);
   return response.data;
 });
 
@@ -68,7 +75,11 @@ export const deleteOrder = createAsyncThunk("orders/deleteOrder", async (id: str
 const orderSlice = createSlice({
   name: "orders",
   initialState,
-  reducers: {},
+  reducers: {
+    updateOrderQuery(state, action) {
+      state.query = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     // Hydration between server and client side to maintain the updated state
     builder.addCase(HYDRATE, (state, action: AnyAction) => {
@@ -127,6 +138,8 @@ const orderSlice = createSlice({
   },
 });
 
-const { reducer } = orderSlice;
+const { reducer, actions } = orderSlice;
+
+export const { updateOrderQuery } = actions;
 
 export default reducer;

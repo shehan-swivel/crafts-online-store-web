@@ -1,5 +1,5 @@
 import { OrderStatus } from "@/constants";
-import { Order } from "@/types";
+import { Order, OrderQuery } from "@/types";
 import apiService from "./api-service";
 
 const PREFIX = "/v1/orders";
@@ -13,9 +13,11 @@ export const orderService = {
 
 /**
  * Get orders list
+ * @param {OrderQuery} [queryParams]
  */
-function getOrders() {
-  return apiService.get(`${PREFIX}`);
+function getOrders(queryParams?: OrderQuery) {
+  const params = queryParams ? { ...queryParams } : {};
+  return apiService.get(`${PREFIX}`, { params });
 }
 
 /**

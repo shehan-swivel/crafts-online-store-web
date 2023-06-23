@@ -1,3 +1,4 @@
+import EmptyResult from "@/components/molecules/EmptyResult";
 import ProductCard from "@/components/molecules/ProductCard";
 import SearchBar from "@/components/molecules/SearchBar";
 import MainLayout from "@/components/templates/MainLayout";
@@ -53,19 +54,23 @@ const Shop = ({ search, category }: ShopProps) => {
       </TopBar>
 
       <Container sx={{ pt: 10, pb: 8 }}>
-        <Grid container spacing={4} rowGap={1}>
-          {products.map((product) => (
-            <Grid item key={product._id} xs={12} sm={6} md={4}>
-              <ProductCard
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                image={product.image as string}
-                onAdd={() => handleAdd(product)}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        {products?.length ? (
+          <Grid container spacing={4} rowGap={1}>
+            {products.map((product) => (
+              <Grid item key={product._id} xs={12} sm={6} md={4}>
+                <ProductCard
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  image={product.image as string}
+                  onAdd={() => handleAdd(product)}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <EmptyResult message="No items found" />
+        )}
       </Container>
     </>
   );

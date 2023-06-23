@@ -43,8 +43,8 @@ apiService.interceptors.response.use(
           const { accessToken, refreshToken } = response.data.data;
 
           // Update stored tokens
-          setCookie(StorageKeys.ACCESS_TOKEN, accessToken);
-          setCookie(StorageKeys.REFRESH_TOKEN, refreshToken);
+          setCookie(StorageKeys.ACCESS_TOKEN, accessToken, { expires: 7 });
+          setCookie(StorageKeys.REFRESH_TOKEN, refreshToken, { expires: 7 });
 
           return apiService(originalConfig);
         } catch (_error) {

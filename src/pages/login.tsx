@@ -1,9 +1,11 @@
 import SpinnerIcon from "@/components/atoms/SpinnerIcon";
 import AuthLayout from "@/components/templates/AuthLayout";
+import { StorageKeys } from "@/constants";
 import useAppDispatch from "@/hooks/useAppDispatch";
 import useAuth from "@/hooks/useAuth";
 import { showSnackbar } from "@/store/slices/ui-slice";
 import { Login } from "@/types";
+import { setCookie } from "@/utils/cookie-utils";
 import { loginFormSchema } from "@/utils/validations";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
@@ -43,6 +45,7 @@ const LoginPage = () => {
 
       // Redirect to the Password Change page if password change is required, otherwise redirect to the dashboard
       if (response.data.data?.user?.requirePasswordChange) {
+        setCookie(StorageKeys.REQUIRE_PASSWORD_CHANGE, true);
         router.push("/change-password");
       } else {
         router.push("/dashboard");

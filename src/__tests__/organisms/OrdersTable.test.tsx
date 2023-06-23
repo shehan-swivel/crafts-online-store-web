@@ -22,6 +22,7 @@ const initialState = {
       ],
       loading: false,
     },
+    query: {},
     submit: {
       loading: false,
       success: false,
