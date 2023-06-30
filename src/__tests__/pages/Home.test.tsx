@@ -24,7 +24,7 @@ const initialState = {
     },
     query: {
       name: "",
-      category: null,
+      category: "",
     },
     submit: {
       loading: false,
@@ -38,7 +38,7 @@ describe("Home", () => {
     renderWithProviders(<Home />, { preloadedState: initialState });
 
     const bannerComponent = screen.getByTestId("banner");
-    const latestCollectionSectionHeader = screen.getByRole("heading", { name: "Out Latest Collection" });
+    const latestCollectionSectionHeader = screen.getByRole("heading", { name: "Our Latest Collection" });
     const productComponents = screen.getAllByTestId("product-card");
     const findByCategoriesSectionHeader = screen.getByRole("heading", { name: "Find by Categories" });
     const categoryComponents = screen.getAllByLabelText("category link");
