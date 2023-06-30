@@ -36,7 +36,7 @@ export default function Home() {
       <Container sx={{ py: 4 }}>
         {/* Latest collection section */}
         <Typography variant="h4" mb={5} mt={8} fontWeight="bold" align="center">
-          Out Latest Collection
+          Our Latest Collection
         </Typography>
         <ProductsGrid products={products} onAdd={handleAdd} />
 
